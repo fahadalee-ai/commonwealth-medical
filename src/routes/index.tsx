@@ -9,22 +9,29 @@ export const Route = createFileRoute("/")({
 
 function Splash() {
   const navigate = useNavigate();
+
   useEffect(() => {
-    const t = setTimeout(() => navigate({ to: "/onboarding" }), 1800);
+    const t = setTimeout(() => {
+      navigate({ to: "/onboarding" });
+    }, 2500);
     return () => clearTimeout(t);
   }, [navigate]);
 
   return (
-    <AppShell>
-      <div className="relative flex min-h-dvh flex-col items-center justify-center bg-[#0D0D0D] px-6">
-        <Logo size={220} />
-        <p className="mt-6 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FFC107]">
-          Powering Your Home & Business,
-          <br />
-          The Right Way.
-        </p>
-        <div className="absolute bottom-[26%] left-1/2 h-[3px] w-40 -translate-x-1/2 overflow-hidden bg-[#161616]">
-          <div className="arc-loading-bar h-full w-1/3 bg-[#FFC107]" />
+    <AppShell className="bg-[#032558]">
+      <div className="relative flex min-h-dvh flex-col items-center justify-center bg-[#032558] px-8">
+        <div className="relative flex flex-col items-center">
+          <div className="pointer-events-none absolute left-1/2 top-[42%] h-32 w-32 -translate-x-1/2 -translate-y-1/2">
+            <span className="cmt-pulse-ring absolute inset-0 bg-[#0a6bdb]/40" />
+            <span className="absolute inset-3 bg-[#0a6bdb]/20 blur-md" />
+          </div>
+          <Logo variant="white" size={300} className="cmt-logo-in relative z-10" />
+        </div>
+
+        <div className="absolute bottom-[18%] left-1/2 w-44 -translate-x-1/2">
+          <div className="h-[3px] overflow-hidden bg-white/15">
+            <div className="cmt-loading-bar h-full w-1/3 bg-[#0a6bdb]" />
+          </div>
         </div>
       </div>
     </AppShell>

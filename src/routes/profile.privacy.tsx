@@ -10,10 +10,21 @@ function Privacy() {
   return (
     <AppShell>
       <ScreenHeader title="Privacy Policy" backTo="/profile" />
-      <div className="space-y-4 p-4 text-xs leading-relaxed text-[#c9c9c9]">
-        <p>We collect only the information necessary to schedule, deliver, and follow up on your electrical service — name, contact details, service address, and job notes/photos you provide.</p>
-        <p>We never sell your data. Personal information is shared only with the assigned technician and payment processor as needed to fulfill the booking.</p>
-        <p>You can request deletion of your account and associated data at any time from Settings or by contacting support.</p>
+      <div className="space-y-4 p-4 text-sm leading-relaxed text-[#5C6B7A]">
+        <p>
+          We collect only the information needed to book, dispatch, and complete your rides —
+          name, contact details, pickup and destination addresses, mobility needs, and coverage
+          identifiers you provide.
+        </p>
+        <p>
+          We never sell your data. Information may be shared with your assigned driver, dispatch
+          team, and authorizing health plan or transportation broker as required to fulfill the
+          trip.
+        </p>
+        <p>
+          You can request updates or deletion of your account by contacting
+          info@ridewithcmt.com or calling (774) 622-3789.
+        </p>
       </div>
     </AppShell>
   );

@@ -20,11 +20,13 @@ function ChangePassword() {
         }}
         className="flex flex-col gap-4 p-4 pb-32"
       >
-        <ArcInput label="Current Password" type="password" placeholder="••••••••" />
-        <ArcInput label="New Password" type="password" placeholder="••••••••" />
-        <ArcInput label="Confirm New Password" type="password" placeholder="••••••••" />
-        <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-[420px] -translate-x-1/2 border-t border-[#2A2A2A] bg-[#0D0D0D] p-4">
-          <ArcButton type="submit" block>Update Password</ArcButton>
+        <ArcInput label="Current Password" type="password" placeholder=" " />
+        <ArcInput label="New Password" type="password" placeholder=" " />
+        <ArcInput label="Confirm New Password" type="password" placeholder=" " />
+        <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-[420px] -translate-x-1/2 border-t border-[#dce3ec] bg-white p-4">
+          <ArcButton type="submit" block>
+            Update Password
+          </ArcButton>
         </div>
       </form>
     </AppShell>

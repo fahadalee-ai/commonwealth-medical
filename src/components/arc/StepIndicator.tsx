@@ -9,7 +9,7 @@ export function StepIndicator({ total, current }: Props) {
       {Array.from({ length: total }).map((_, i) => (
         <div
           key={i}
-          className={`h-1 flex-1 ${i < current ? "bg-[#E31E24]" : "bg-[#2A2A2A]"}`}
+          className={`h-1.5 flex-1 ${i < current ? "bg-[#0a6bdb]" : "bg-[#dce3ec]"}`}
         />
       ))}
     </div>

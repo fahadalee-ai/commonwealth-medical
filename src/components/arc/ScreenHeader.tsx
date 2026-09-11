@@ -6,24 +6,33 @@ interface ScreenHeaderProps {
   title: string;
   backTo?: string;
   right?: ReactNode;
+  dark?: boolean;
 }
 
-export function ScreenHeader({ title, backTo, right }: ScreenHeaderProps) {
+export function ScreenHeader({ title, backTo, right, dark }: ScreenHeaderProps) {
   return (
-    <div className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#2A2A2A] bg-[#0D0D0D] px-4">
-      <div className="flex items-center gap-2">
+    <div
+      className={`sticky top-0 z-30 flex h-14 items-center justify-between px-4 ${
+        dark
+          ? "bg-[#032558] text-white"
+          : "border-b border-[#dce3ec] bg-white/95 text-[#032558] backdrop-blur"
+      }`}
+    >
+      <div className="flex min-w-0 items-center gap-1">
         {backTo ? (
           <Link
             to={backTo}
             aria-label="Back"
-            className="flex h-10 w-10 items-center justify-center bg-[#161616] text-white"
+            className={`flex h-11 w-11 items-center justify-center ${
+              dark ? "bg-white/10 text-white" : "bg-[#f5f7fa] text-[#032558]"
+            }`}
           >
             <ChevronLeft className="h-5 w-5" />
           </Link>
         ) : (
-          <div className="w-10" />
+          <div className="w-2" />
         )}
-        <h1 className="text-base font-bold tracking-tight text-white">{title}</h1>
+        <h1 className="truncate text-base font-bold tracking-tight">{title}</h1>
       </div>
       <div>{right}</div>
     </div>

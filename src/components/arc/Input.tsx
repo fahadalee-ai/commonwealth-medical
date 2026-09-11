@@ -1,37 +1,72 @@
-import { forwardRef, useState, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, useState, type InputHTMLAttributes, type ReactNode } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  prefixIcon?: ReactNode;
 }
 
 export const ArcInput = forwardRef<HTMLInputElement, Props>(function ArcInput(
-  { label, className = "", type = "text", ...rest },
+  { label, className = "", type = "text", prefixIcon, id, ...rest },
   ref,
 ) {
   const [show, setShow] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const uid = useId();
+  const inputId = id ?? uid;
   const isPassword = type === "password";
   const actualType = isPassword && show ? "text" : type;
+  const hasValue = Boolean(rest.value ?? rest.defaultValue);
+  const float = focused || hasValue || Boolean(rest.placeholder);
+
   return (
-    <label className="block">
-      {label && (
-        <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-[#8A8A8A]">
-          {label}
-        </span>
-      )}
-      <div className="relative">
+    <label className="block" htmlFor={inputId}>
+      <div
+        className={`relative border bg-[#eef1f6] transition-colors ${
+          focused ? "border-[#032558] ring-2 ring-[#032558]/10" : "border-transparent"
+        }`}
+      >
+        {prefixIcon && (
+          <span className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-[#5C6B7A]">
+            {prefixIcon}
+          </span>
+        )}
+        {label && (
+          <span
+            className={`pointer-events-none absolute z-10 origin-left text-[#5C6B7A] transition-all ${
+              prefixIcon ? "left-10" : "left-4"
+            } ${
+              float
+                ? "top-1.5 text-[10px] font-semibold uppercase tracking-wide"
+                : "top-1/2 -translate-y-1/2 text-sm"
+            }`}
+          >
+            {label}
+          </span>
+        )}
         <input
           ref={ref}
+          id={inputId}
           type={actualType}
           {...rest}
-          className={`h-12 w-full border border-[#2A2A2A] bg-[#161616] px-4 text-sm text-white placeholder:text-[#5a5a5a] focus:border-[#FFC107] focus:outline-none ${isPassword ? "pr-12" : ""} ${className}`}
+          onFocus={(e) => {
+            setFocused(true);
+            rest.onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setFocused(false);
+            rest.onBlur?.(e);
+          }}
+          className={`h-14 w-full bg-transparent text-[15px] text-[#032558] placeholder:text-[#5C6B7A]/50 focus:outline-none ${
+            label ? "pt-4" : ""
+          } ${prefixIcon ? "pl-10" : "px-4"} ${isPassword ? "pr-12" : "pr-4"} ${className}`}
         />
         {isPassword && (
           <button
             type="button"
             onClick={() => setShow((s) => !s)}
             aria-label={show ? "Hide password" : "Show password"}
-            className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#8A8A8A]"
+            className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#5C6B7A]"
           >
             {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>

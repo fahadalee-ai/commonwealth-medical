@@ -1,17 +1,17 @@
 import { Link, useRouterState, type LinkProps } from "@tanstack/react-router";
-import { Home, Wrench, CalendarCheck2, User, Plus } from "lucide-react";
+import { Home, CarFront, Clock3, MessageCircle, User } from "lucide-react";
 
 type NavItem = {
   to: LinkProps["to"];
   label: string;
   icon: typeof Home;
-  center?: boolean;
 };
+
 const items: NavItem[] = [
   { to: "/home", label: "Home", icon: Home },
-  { to: "/services", label: "Services", icon: Wrench },
-  { to: "/book", label: "Book", icon: Plus, center: true },
-  { to: "/appointments", label: "Appointments", icon: CalendarCheck2 },
+  { to: "/book", label: "Book", icon: CarFront },
+  { to: "/appointments", label: "Rides", icon: Clock3 },
+  { to: "/support", label: "Support", icon: MessageCircle },
   { to: "/profile", label: "Profile", icon: User },
 ];
 
@@ -21,32 +21,25 @@ export function BottomNav() {
   return (
     <>
       <div className="h-24" />
-      <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-[420px] -translate-x-1/2 border-t border-[#2A2A2A] bg-[#0D0D0D]">
-        <ul className="grid h-20 grid-cols-5 items-end pb-3">
-          {items.map(({ to, label, icon: Icon, center }) => {
+      <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-[420px] -translate-x-1/2 bg-[#032558] pb-[env(safe-area-inset-bottom)]">
+        <ul className="grid h-[72px] grid-cols-5 items-center px-1">
+          {items.map(({ to, label, icon: Icon }) => {
             const active =
               to === "/home" ? path === "/home" : path.startsWith(String(to));
-            if (center) {
-              return (
-                <li key={String(to)} className="flex items-start justify-center">
-                  <Link
-                    to={to}
-                    aria-label={label}
-                    className="-mt-6 flex h-14 w-14 items-center justify-center bg-[#E31E24] text-white shadow-[0_0_0_4px_#0D0D0D]"
-                  >
-                    <Icon className="h-7 w-7" strokeWidth={2.5} />
-                  </Link>
-                </li>
-              );
-            }
             return (
-              <li key={String(to)} className="flex flex-col items-center gap-1">
+              <li key={String(to)} className="flex items-center justify-center">
                 <Link
                   to={to}
-                  className={`flex flex-col items-center gap-1 text-[10px] font-semibold uppercase tracking-wide ${active ? "text-[#E31E24]" : "text-[#8A8A8A]"}`}
+                  className={`flex min-h-12 min-w-[68px] flex-col items-center justify-center gap-0.5 px-1 text-[10px] font-semibold ${
+                    active ? "bg-[#4da6ff] text-[#032558]" : "bg-transparent text-white"
+                  }`}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span>{label}</span>
+                  <Icon
+                    className={active ? "h-6 w-6" : "h-5 w-5"}
+                    strokeWidth={active ? 2.6 : 2}
+                    fill={active ? "currentColor" : "none"}
+                  />
+                  <span className={active ? "font-extrabold" : "font-semibold"}>{label}</span>
                 </Link>
               </li>
             );

@@ -1,27 +1,61 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-/** Public URL path (trailing slash). Must match Nginx `location` and `PREVIEW_URL` in preview.html. */
-const PRODUCTION_BASE = "/arc-electric-pro/";
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
+const previewFile = path.join(rootDir, "preview.html");
+const publicPreviewFile = path.join(rootDir, "public", "preview.html");
+
+function syncPreviewHtml() {
+  fs.mkdirSync(path.dirname(publicPreviewFile), { recursive: true });
+  fs.copyFileSync(previewFile, publicPreviewFile);
+}
+
+function servePreviewHtml() {
+  const handler = (
+    req: { url?: string },
+    res: { statusCode: number; setHeader: (k: string, v: string) => void; end: (b: string) => void },
+    next: () => void,
+  ) => {
+    const url = (req.url ?? "").split("?")[0];
+    if (url === "/preview.html" || url === "/preview") {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.end(fs.readFileSync(previewFile, "utf8"));
+      return;
+    }
+    next();
+  };
+
+  return {
+    name: "serve-preview-html",
+    buildStart() {
+      syncPreviewHtml();
+    },
+    configureServer(server: { middlewares: { use: (fn: typeof handler) => void } }) {
+      syncPreviewHtml();
+      server.middlewares.use(handler);
+    },
+    configurePreviewServer(server: { middlewares: { use: (fn: typeof handler) => void } }) {
+      server.middlewares.use(handler);
+    },
+  };
+}
 
 export default defineConfig({
-  cloudflare: false,
+  nitro: { preset: "vercel" },
+  tanstackStart: {
+    server: { entry: "server" },
+  },
   vite: {
-    // Subpath must match Nginx and preview.html; use this for dev/preview/build so PM2 `vite preview` matches assets.
-    base: PRODUCTION_BASE,
-    // Allow the domain to access the preview server (if needed for SSR testing)
+    base: "/",
+    plugins: [servePreviewHtml()],
     server: {
-        allowedHosts: [
-            "demo.sourapps.com",
-            "localhost",
-            "127.0.0.1",
-        ],
+      allowedHosts: true,
     },
     preview: {
-        allowedHosts: [
-            "demo.sourapps.com",
-            "localhost",
-            "127.0.0.1",
-        ],
+      allowedHosts: true,
     },
   },
 });

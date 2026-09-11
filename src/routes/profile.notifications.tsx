@@ -8,32 +8,37 @@ export const Route = createFileRoute("/profile/notifications")({
 });
 
 const PREFS = [
-  { key: "confirmations", label: "Booking confirmations", desc: "When a booking is approved or updated." },
-  { key: "reminders", label: "Appointment reminders", desc: "Day-before and same-day reminders." },
-  { key: "promos", label: "Promotions & offers", desc: "Occasional discounts and seasonal deals." },
-  { key: "completed", label: "Service completion", desc: "Prompts to rate finished jobs." },
+  { key: "reminders", label: "Ride reminders", desc: "Day-before and same-day pickup reminders." },
+  { key: "arrival", label: "Driver arrival alerts", desc: "When your driver is en route or has arrived." },
+  { key: "auth", label: "Authorization updates", desc: "Coverage and PT-1 status changes." },
+  { key: "completed", label: "Trip completed", desc: "Receipts and follow-up after a ride." },
 ];
 
 function NotifPrefs() {
   const [on, setOn] = useState<Record<string, boolean>>({
-    confirmations: true, reminders: true, promos: false, completed: true,
+    reminders: true,
+    arrival: true,
+    auth: true,
+    completed: false,
   });
   return (
     <AppShell>
       <ScreenHeader title="Notifications" backTo="/profile" />
       <ul>
         {PREFS.map((p) => (
-          <li key={p.key} className="flex items-center justify-between gap-4 border-b border-[#2A2A2A] p-4">
+          <li key={p.key} className="flex items-center justify-between gap-4 border-b border-[#eef1f6] bg-white p-4">
             <div className="min-w-0">
-              <p className="text-sm font-bold">{p.label}</p>
-              <p className="mt-0.5 text-xs text-[#8A8A8A]">{p.desc}</p>
+              <p className="text-sm font-bold text-[#032558]">{p.label}</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-[#5C6B7A]">{p.desc}</p>
             </div>
             <button
               onClick={() => setOn((s) => ({ ...s, [p.key]: !s[p.key] }))}
-              className={`flex h-6 w-11 flex-none items-center p-0.5 ${on[p.key] ? "justify-end bg-[#E31E24]" : "justify-start bg-[#2A2A2A]"}`}
+              className={`flex h-7 w-12 flex-none items-center rounded-full p-0.5 ${
+                on[p.key] ? "justify-end bg-[#0a6bdb]" : "justify-start bg-[#dce3ec]"
+              }`}
               aria-label={`Toggle ${p.label}`}
             >
-              <span className="h-5 w-5 bg-white" />
+              <span className="h-6 w-6 rounded-full bg-white shadow" />
             </button>
           </li>
         ))}

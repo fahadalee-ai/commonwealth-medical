@@ -9,63 +9,43 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetSentRouteImport } from './routes/reset-sent'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIndexRouteImport } from './routes/services.index'
-import { Route as ProfileIndexRouteImport } from './routes/profile.index'
+import { Route as BookRouteImport } from './routes/book'
+import { Route as CommonwealthMedicalRouteImport } from './routes/commonwealth-medical'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetSentRouteImport } from './routes/reset-sent'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as VerifyRouteImport } from './routes/verify'
+import { Route as WebsiteRouteImport } from './routes/website'
 import { Route as AppointmentsIndexRouteImport } from './routes/appointments.index'
-import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
-import { Route as ProfileTermsRouteImport } from './routes/profile.terms'
-import { Route as ProfilePrivacyRouteImport } from './routes/profile.privacy'
-import { Route as ProfileNotificationsRouteImport } from './routes/profile.notifications'
-import { Route as ProfileHelpRouteImport } from './routes/profile.help'
-import { Route as ProfileEditRouteImport } from './routes/profile.edit'
-import { Route as ProfileChangePasswordRouteImport } from './routes/profile.change-password'
-import { Route as ProfileAddressesRouteImport } from './routes/profile.addresses'
 import { Route as AppointmentsIdRouteImport } from './routes/appointments.$id'
-import { Route as AppointmentsIdRescheduleRouteImport } from './routes/appointments.$id.reschedule'
+import { Route as CommonwealthMedicalIndexRouteImport } from './routes/commonwealth-medical.index'
+import { Route as CommonwealthMedicalSplatRouteImport } from './routes/commonwealth-medical.$'
+import { Route as ProfileIndexRouteImport } from './routes/profile.index'
+import { Route as ProfileAddressesRouteImport } from './routes/profile.addresses'
+import { Route as ProfileChangePasswordRouteImport } from './routes/profile.change-password'
+import { Route as ProfileEditRouteImport } from './routes/profile.edit'
+import { Route as ProfileHelpRouteImport } from './routes/profile.help'
+import { Route as ProfileNotificationsRouteImport } from './routes/profile.notifications'
+import { Route as ProfilePrivacyRouteImport } from './routes/profile.privacy'
+import { Route as ProfileTermsRouteImport } from './routes/profile.terms'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
+import { Route as TrackIdRouteImport } from './routes/track.$id'
+import { Route as WebsiteIndexRouteImport } from './routes/website.index'
+import { Route as WebsiteServicesRouteImport } from './routes/website.services'
 import { Route as AppointmentsIdCancelRouteImport } from './routes/appointments.$id.cancel'
+import { Route as AppointmentsIdReceiptRouteImport } from './routes/appointments.$id.receipt'
+import { Route as AppointmentsIdRescheduleRouteImport } from './routes/appointments.$id.reschedule'
 
-const ResetSentRoute = ResetSentRouteImport.update({
-  id: '/reset-sent',
-  path: '/reset-sent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookRoute = BookRouteImport.update({
@@ -73,19 +53,59 @@ const BookRoute = BookRouteImport.update({
   path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CommonwealthMedicalRoute = CommonwealthMedicalRouteImport.update({
+  id: '/commonwealth-medical',
+  path: '/commonwealth-medical',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesIndexRoute = ServicesIndexRouteImport.update({
-  id: '/services/',
-  path: '/services/',
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetSentRoute = ResetSentRouteImport.update({
+  id: '/reset-sent',
+  path: '/reset-sent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyRoute = VerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebsiteRoute = WebsiteRouteImport.update({
+  id: '/website',
+  path: '/website',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppointmentsIndexRoute = AppointmentsIndexRouteImport.update({
@@ -93,39 +113,26 @@ const AppointmentsIndexRoute = AppointmentsIndexRouteImport.update({
   path: '/appointments/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
-  id: '/services/$serviceId',
-  path: '/services/$serviceId',
+const AppointmentsIdRoute = AppointmentsIdRouteImport.update({
+  id: '/appointments/$id',
+  path: '/appointments/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileTermsRoute = ProfileTermsRouteImport.update({
-  id: '/profile/terms',
-  path: '/profile/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfilePrivacyRoute = ProfilePrivacyRouteImport.update({
-  id: '/profile/privacy',
-  path: '/profile/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileNotificationsRoute = ProfileNotificationsRouteImport.update({
-  id: '/profile/notifications',
-  path: '/profile/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileHelpRoute = ProfileHelpRouteImport.update({
-  id: '/profile/help',
-  path: '/profile/help',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileEditRoute = ProfileEditRouteImport.update({
-  id: '/profile/edit',
-  path: '/profile/edit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileChangePasswordRoute = ProfileChangePasswordRouteImport.update({
-  id: '/profile/change-password',
-  path: '/profile/change-password',
+const CommonwealthMedicalIndexRoute =
+  CommonwealthMedicalIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => CommonwealthMedicalRoute,
+  } as any)
+const CommonwealthMedicalSplatRoute =
+  CommonwealthMedicalSplatRouteImport.update({
+    id: '/$',
+    path: '/$',
+    getParentRoute: () => CommonwealthMedicalRoute,
+  } as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileAddressesRoute = ProfileAddressesRouteImport.update({
@@ -133,10 +140,70 @@ const ProfileAddressesRoute = ProfileAddressesRouteImport.update({
   path: '/profile/addresses',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppointmentsIdRoute = AppointmentsIdRouteImport.update({
-  id: '/appointments/$id',
-  path: '/appointments/$id',
+const ProfileChangePasswordRoute = ProfileChangePasswordRouteImport.update({
+  id: '/profile/change-password',
+  path: '/profile/change-password',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileEditRoute = ProfileEditRouteImport.update({
+  id: '/profile/edit',
+  path: '/profile/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileHelpRoute = ProfileHelpRouteImport.update({
+  id: '/profile/help',
+  path: '/profile/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileNotificationsRoute = ProfileNotificationsRouteImport.update({
+  id: '/profile/notifications',
+  path: '/profile/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilePrivacyRoute = ProfilePrivacyRouteImport.update({
+  id: '/profile/privacy',
+  path: '/profile/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileTermsRoute = ProfileTermsRouteImport.update({
+  id: '/profile/terms',
+  path: '/profile/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
+  id: '/services/$serviceId',
+  path: '/services/$serviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackIdRoute = TrackIdRouteImport.update({
+  id: '/track/$id',
+  path: '/track/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WebsiteRoute,
+} as any)
+const WebsiteServicesRoute = WebsiteServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => WebsiteRoute,
+} as any)
+const AppointmentsIdCancelRoute = AppointmentsIdCancelRouteImport.update({
+  id: '/cancel',
+  path: '/cancel',
+  getParentRoute: () => AppointmentsIdRoute,
+} as any)
+const AppointmentsIdReceiptRoute = AppointmentsIdReceiptRouteImport.update({
+  id: '/receipt',
+  path: '/receipt',
+  getParentRoute: () => AppointmentsIdRoute,
 } as any)
 const AppointmentsIdRescheduleRoute =
   AppointmentsIdRescheduleRouteImport.update({
@@ -144,15 +211,11 @@ const AppointmentsIdRescheduleRoute =
     path: '/reschedule',
     getParentRoute: () => AppointmentsIdRoute,
   } as any)
-const AppointmentsIdCancelRoute = AppointmentsIdCancelRouteImport.update({
-  id: '/cancel',
-  path: '/cancel',
-  getParentRoute: () => AppointmentsIdRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
+  '/commonwealth-medical': typeof CommonwealthMedicalRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -160,7 +223,11 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
+  '/support': typeof SupportRoute
+  '/verify': typeof VerifyRoute
+  '/website': typeof WebsiteRouteWithChildren
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
+  '/commonwealth-medical/$': typeof CommonwealthMedicalSplatRoute
   '/profile/addresses': typeof ProfileAddressesRoute
   '/profile/change-password': typeof ProfileChangePasswordRoute
   '/profile/edit': typeof ProfileEditRoute
@@ -169,10 +236,15 @@ export interface FileRoutesByFullPath {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/track/$id': typeof TrackIdRoute
+  '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
+  '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/website/': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
+  '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
   '/appointments/$id/reschedule': typeof AppointmentsIdRescheduleRoute
 }
 export interface FileRoutesByTo {
@@ -185,7 +257,10 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
+  '/support': typeof SupportRoute
+  '/verify': typeof VerifyRoute
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
+  '/commonwealth-medical/$': typeof CommonwealthMedicalSplatRoute
   '/profile/addresses': typeof ProfileAddressesRoute
   '/profile/change-password': typeof ProfileChangePasswordRoute
   '/profile/edit': typeof ProfileEditRoute
@@ -194,16 +269,22 @@ export interface FileRoutesByTo {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/track/$id': typeof TrackIdRoute
+  '/website/services': typeof WebsiteServicesRoute
   '/appointments': typeof AppointmentsIndexRoute
+  '/commonwealth-medical': typeof CommonwealthMedicalIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/website': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
+  '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
   '/appointments/$id/reschedule': typeof AppointmentsIdRescheduleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/book': typeof BookRoute
+  '/commonwealth-medical': typeof CommonwealthMedicalRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -211,7 +292,11 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
+  '/support': typeof SupportRoute
+  '/verify': typeof VerifyRoute
+  '/website': typeof WebsiteRouteWithChildren
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
+  '/commonwealth-medical/$': typeof CommonwealthMedicalSplatRoute
   '/profile/addresses': typeof ProfileAddressesRoute
   '/profile/change-password': typeof ProfileChangePasswordRoute
   '/profile/edit': typeof ProfileEditRoute
@@ -220,10 +305,15 @@ export interface FileRoutesById {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/track/$id': typeof TrackIdRoute
+  '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
+  '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/website/': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
+  '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
   '/appointments/$id/reschedule': typeof AppointmentsIdRescheduleRoute
 }
 export interface FileRouteTypes {
@@ -231,6 +321,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/book'
+    | '/commonwealth-medical'
     | '/forgot-password'
     | '/home'
     | '/login'
@@ -238,7 +329,11 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/register'
     | '/reset-sent'
+    | '/support'
+    | '/verify'
+    | '/website'
     | '/appointments/$id'
+    | '/commonwealth-medical/$'
     | '/profile/addresses'
     | '/profile/change-password'
     | '/profile/edit'
@@ -247,10 +342,15 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/track/$id'
+    | '/website/services'
     | '/appointments/'
+    | '/commonwealth-medical/'
     | '/profile/'
     | '/services/'
+    | '/website/'
     | '/appointments/$id/cancel'
+    | '/appointments/$id/receipt'
     | '/appointments/$id/reschedule'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -263,7 +363,10 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/register'
     | '/reset-sent'
+    | '/support'
+    | '/verify'
     | '/appointments/$id'
+    | '/commonwealth-medical/$'
     | '/profile/addresses'
     | '/profile/change-password'
     | '/profile/edit'
@@ -272,15 +375,21 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/track/$id'
+    | '/website/services'
     | '/appointments'
+    | '/commonwealth-medical'
     | '/profile'
     | '/services'
+    | '/website'
     | '/appointments/$id/cancel'
+    | '/appointments/$id/receipt'
     | '/appointments/$id/reschedule'
   id:
     | '__root__'
     | '/'
     | '/book'
+    | '/commonwealth-medical'
     | '/forgot-password'
     | '/home'
     | '/login'
@@ -288,7 +397,11 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/register'
     | '/reset-sent'
+    | '/support'
+    | '/verify'
+    | '/website'
     | '/appointments/$id'
+    | '/commonwealth-medical/$'
     | '/profile/addresses'
     | '/profile/change-password'
     | '/profile/edit'
@@ -297,16 +410,22 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/track/$id'
+    | '/website/services'
     | '/appointments/'
+    | '/commonwealth-medical/'
     | '/profile/'
     | '/services/'
+    | '/website/'
     | '/appointments/$id/cancel'
+    | '/appointments/$id/receipt'
     | '/appointments/$id/reschedule'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookRoute: typeof BookRoute
+  CommonwealthMedicalRoute: typeof CommonwealthMedicalRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
@@ -314,6 +433,9 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   RegisterRoute: typeof RegisterRoute
   ResetSentRoute: typeof ResetSentRoute
+  SupportRoute: typeof SupportRoute
+  VerifyRoute: typeof VerifyRoute
+  WebsiteRoute: typeof WebsiteRouteWithChildren
   AppointmentsIdRoute: typeof AppointmentsIdRouteWithChildren
   ProfileAddressesRoute: typeof ProfileAddressesRoute
   ProfileChangePasswordRoute: typeof ProfileChangePasswordRoute
@@ -323,6 +445,7 @@ export interface RootRouteChildren {
   ProfilePrivacyRoute: typeof ProfilePrivacyRoute
   ProfileTermsRoute: typeof ProfileTermsRoute
   ServicesServiceIdRoute: typeof ServicesServiceIdRoute
+  TrackIdRoute: typeof TrackIdRoute
   AppointmentsIndexRoute: typeof AppointmentsIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
@@ -330,53 +453,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-sent': {
-      id: '/reset-sent'
-      path: '/reset-sent'
-      fullPath: '/reset-sent'
-      preLoaderRoute: typeof ResetSentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -386,25 +467,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/commonwealth-medical': {
+      id: '/commonwealth-medical'
+      path: '/commonwealth-medical'
+      fullPath: '/commonwealth-medical'
+      preLoaderRoute: typeof CommonwealthMedicalRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/': {
-      id: '/services/'
-      path: '/services'
-      fullPath: '/services/'
-      preLoaderRoute: typeof ServicesIndexRouteImport
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile/': {
-      id: '/profile/'
-      path: '/profile'
-      fullPath: '/profile/'
-      preLoaderRoute: typeof ProfileIndexRouteImport
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-sent': {
+      id: '/reset-sent'
+      path: '/reset-sent'
+      fullPath: '/reset-sent'
+      preLoaderRoute: typeof ResetSentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify': {
+      id: '/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof VerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/website': {
+      id: '/website'
+      path: '/website'
+      fullPath: '/website'
+      preLoaderRoute: typeof WebsiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/appointments/': {
@@ -414,53 +551,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppointmentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/$serviceId': {
-      id: '/services/$serviceId'
-      path: '/services/$serviceId'
-      fullPath: '/services/$serviceId'
-      preLoaderRoute: typeof ServicesServiceIdRouteImport
+    '/appointments/$id': {
+      id: '/appointments/$id'
+      path: '/appointments/$id'
+      fullPath: '/appointments/$id'
+      preLoaderRoute: typeof AppointmentsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile/terms': {
-      id: '/profile/terms'
-      path: '/profile/terms'
-      fullPath: '/profile/terms'
-      preLoaderRoute: typeof ProfileTermsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/commonwealth-medical/': {
+      id: '/commonwealth-medical/'
+      path: '/'
+      fullPath: '/commonwealth-medical/'
+      preLoaderRoute: typeof CommonwealthMedicalIndexRouteImport
+      parentRoute: typeof CommonwealthMedicalRoute
     }
-    '/profile/privacy': {
-      id: '/profile/privacy'
-      path: '/profile/privacy'
-      fullPath: '/profile/privacy'
-      preLoaderRoute: typeof ProfilePrivacyRouteImport
-      parentRoute: typeof rootRouteImport
+    '/commonwealth-medical/$': {
+      id: '/commonwealth-medical/$'
+      path: '/$'
+      fullPath: '/commonwealth-medical/$'
+      preLoaderRoute: typeof CommonwealthMedicalSplatRouteImport
+      parentRoute: typeof CommonwealthMedicalRoute
     }
-    '/profile/notifications': {
-      id: '/profile/notifications'
-      path: '/profile/notifications'
-      fullPath: '/profile/notifications'
-      preLoaderRoute: typeof ProfileNotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile/help': {
-      id: '/profile/help'
-      path: '/profile/help'
-      fullPath: '/profile/help'
-      preLoaderRoute: typeof ProfileHelpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile/edit': {
-      id: '/profile/edit'
-      path: '/profile/edit'
-      fullPath: '/profile/edit'
-      preLoaderRoute: typeof ProfileEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile/change-password': {
-      id: '/profile/change-password'
-      path: '/profile/change-password'
-      fullPath: '/profile/change-password'
-      preLoaderRoute: typeof ProfileChangePasswordRouteImport
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile/addresses': {
@@ -470,19 +586,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileAddressesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/appointments/$id': {
-      id: '/appointments/$id'
-      path: '/appointments/$id'
-      fullPath: '/appointments/$id'
-      preLoaderRoute: typeof AppointmentsIdRouteImport
+    '/profile/change-password': {
+      id: '/profile/change-password'
+      path: '/profile/change-password'
+      fullPath: '/profile/change-password'
+      preLoaderRoute: typeof ProfileChangePasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/appointments/$id/reschedule': {
-      id: '/appointments/$id/reschedule'
-      path: '/reschedule'
-      fullPath: '/appointments/$id/reschedule'
-      preLoaderRoute: typeof AppointmentsIdRescheduleRouteImport
-      parentRoute: typeof AppointmentsIdRoute
+    '/profile/edit': {
+      id: '/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof ProfileEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/help': {
+      id: '/profile/help'
+      path: '/profile/help'
+      fullPath: '/profile/help'
+      preLoaderRoute: typeof ProfileHelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/notifications': {
+      id: '/profile/notifications'
+      path: '/profile/notifications'
+      fullPath: '/profile/notifications'
+      preLoaderRoute: typeof ProfileNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/privacy': {
+      id: '/profile/privacy'
+      path: '/profile/privacy'
+      fullPath: '/profile/privacy'
+      preLoaderRoute: typeof ProfilePrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/terms': {
+      id: '/profile/terms'
+      path: '/profile/terms'
+      fullPath: '/profile/terms'
+      preLoaderRoute: typeof ProfileTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$serviceId': {
+      id: '/services/$serviceId'
+      path: '/services/$serviceId'
+      fullPath: '/services/$serviceId'
+      preLoaderRoute: typeof ServicesServiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track/$id': {
+      id: '/track/$id'
+      path: '/track/$id'
+      fullPath: '/track/$id'
+      preLoaderRoute: typeof TrackIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/website/': {
+      id: '/website/'
+      path: '/'
+      fullPath: '/website/'
+      preLoaderRoute: typeof WebsiteIndexRouteImport
+      parentRoute: typeof WebsiteRoute
+    }
+    '/website/services': {
+      id: '/website/services'
+      path: '/services'
+      fullPath: '/website/services'
+      preLoaderRoute: typeof WebsiteServicesRouteImport
+      parentRoute: typeof WebsiteRoute
     }
     '/appointments/$id/cancel': {
       id: '/appointments/$id/cancel'
@@ -491,16 +670,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppointmentsIdCancelRouteImport
       parentRoute: typeof AppointmentsIdRoute
     }
+    '/appointments/$id/receipt': {
+      id: '/appointments/$id/receipt'
+      path: '/receipt'
+      fullPath: '/appointments/$id/receipt'
+      preLoaderRoute: typeof AppointmentsIdReceiptRouteImport
+      parentRoute: typeof AppointmentsIdRoute
+    }
+    '/appointments/$id/reschedule': {
+      id: '/appointments/$id/reschedule'
+      path: '/reschedule'
+      fullPath: '/appointments/$id/reschedule'
+      preLoaderRoute: typeof AppointmentsIdRescheduleRouteImport
+      parentRoute: typeof AppointmentsIdRoute
+    }
   }
 }
 
+interface CommonwealthMedicalRouteChildren {
+  CommonwealthMedicalSplatRoute: typeof CommonwealthMedicalSplatRoute
+  CommonwealthMedicalIndexRoute: typeof CommonwealthMedicalIndexRoute
+}
+
+const CommonwealthMedicalRouteChildren: CommonwealthMedicalRouteChildren = {
+  CommonwealthMedicalSplatRoute: CommonwealthMedicalSplatRoute,
+  CommonwealthMedicalIndexRoute: CommonwealthMedicalIndexRoute,
+}
+
+const CommonwealthMedicalRouteWithChildren =
+  CommonwealthMedicalRoute._addFileChildren(CommonwealthMedicalRouteChildren)
+
+interface WebsiteRouteChildren {
+  WebsiteServicesRoute: typeof WebsiteServicesRoute
+  WebsiteIndexRoute: typeof WebsiteIndexRoute
+}
+
+const WebsiteRouteChildren: WebsiteRouteChildren = {
+  WebsiteServicesRoute: WebsiteServicesRoute,
+  WebsiteIndexRoute: WebsiteIndexRoute,
+}
+
+const WebsiteRouteWithChildren =
+  WebsiteRoute._addFileChildren(WebsiteRouteChildren)
+
 interface AppointmentsIdRouteChildren {
   AppointmentsIdCancelRoute: typeof AppointmentsIdCancelRoute
+  AppointmentsIdReceiptRoute: typeof AppointmentsIdReceiptRoute
   AppointmentsIdRescheduleRoute: typeof AppointmentsIdRescheduleRoute
 }
 
 const AppointmentsIdRouteChildren: AppointmentsIdRouteChildren = {
   AppointmentsIdCancelRoute: AppointmentsIdCancelRoute,
+  AppointmentsIdReceiptRoute: AppointmentsIdReceiptRoute,
   AppointmentsIdRescheduleRoute: AppointmentsIdRescheduleRoute,
 }
 
@@ -511,6 +732,7 @@ const AppointmentsIdRouteWithChildren = AppointmentsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookRoute: BookRoute,
+  CommonwealthMedicalRoute: CommonwealthMedicalRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
@@ -518,6 +740,9 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   RegisterRoute: RegisterRoute,
   ResetSentRoute: ResetSentRoute,
+  SupportRoute: SupportRoute,
+  VerifyRoute: VerifyRoute,
+  WebsiteRoute: WebsiteRouteWithChildren,
   AppointmentsIdRoute: AppointmentsIdRouteWithChildren,
   ProfileAddressesRoute: ProfileAddressesRoute,
   ProfileChangePasswordRoute: ProfileChangePasswordRoute,
@@ -527,6 +752,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfilePrivacyRoute: ProfilePrivacyRoute,
   ProfileTermsRoute: ProfileTermsRoute,
   ServicesServiceIdRoute: ServicesServiceIdRoute,
+  TrackIdRoute: TrackIdRoute,
   AppointmentsIndexRoute: AppointmentsIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
@@ -534,3 +760,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

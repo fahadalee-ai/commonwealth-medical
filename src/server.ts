@@ -44,9 +44,27 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+const LEGACY_PREFIX = "/commonwealth-medical";
+
+function redirectLegacyPrefix(request: Request): Response | null {
+  const url = new URL(request.url);
+  const { pathname } = url;
+  if (pathname === LEGACY_PREFIX || pathname === `${LEGACY_PREFIX}/`) {
+    url.pathname = "/";
+    return Response.redirect(url, 307);
+  }
+  if (pathname.startsWith(`${LEGACY_PREFIX}/`)) {
+    url.pathname = pathname.slice(LEGACY_PREFIX.length) || "/";
+    return Response.redirect(url, 307);
+  }
+  return null;
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const legacy = redirectLegacyPrefix(request);
+      if (legacy) return legacy;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

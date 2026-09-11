@@ -14,9 +14,11 @@ function ForgotPassword() {
     <AppShell>
       <ScreenHeader title="Forgot Password" backTo="/login" />
       <div className="px-6 pt-6">
-        <h1 className="text-2xl font-extrabold tracking-tight">Reset Your Password</h1>
-        <p className="mt-2 text-sm text-[#8A8A8A]">
-          Enter your registered email and we&apos;ll send you a reset link.
+        <h1 className="text-2xl font-extrabold tracking-tight text-[#032558]">
+          Reset Your Password
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-[#5C6B7A]">
+          Enter your registered email or phone and we&apos;ll send you a reset link.
         </p>
         <form
           onSubmit={(e) => {
@@ -25,13 +27,13 @@ function ForgotPassword() {
           }}
           className="mt-6 flex flex-col gap-4"
         >
-          <ArcInput label="Email Address" type="email" placeholder="you@example.com" />
+          <ArcInput label="Phone Number or Email" placeholder=" " />
           <ArcButton type="submit" block>
             Send Reset Link
           </ArcButton>
         </form>
         <div className="mt-6 text-center">
-          <Link to="/login" className="text-xs font-semibold uppercase tracking-widest text-[#FFC107]">
+          <Link to="/login" className="text-sm font-semibold text-[#0a6bdb]">
             Back to Login
           </Link>
         </div>

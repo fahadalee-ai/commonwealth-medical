@@ -1,121 +1,94 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { CarFront } from "lucide-react";
 import { AppShell } from "@/components/arc/AppShell";
 import { BottomNav } from "@/components/arc/BottomNav";
 import { ScreenHeader } from "@/components/arc/ScreenHeader";
+import { StatusBadge } from "@/components/arc/StatusBadge";
 import { ArcButton } from "@/components/arc/Button";
-import { UPCOMING, PAST, CANCELLED, statusColor, type Appointment } from "@/lib/appointments-data";
+import { ALL_APPOINTMENTS, type Appointment } from "@/lib/appointments-data";
+import { bookingStore, type RideType } from "@/lib/booking-store";
 
 export const Route = createFileRoute("/appointments/")({
-  component: AppointmentsList,
-  head: () => ({ meta: [{ title: "My Appointments · ARC" }] }),
+  component: RideHistory,
+  head: () => ({ meta: [{ title: "Ride History · CMT" }] }),
 });
 
-type Tab = "Upcoming" | "Past" | "Cancelled";
-
-function AppointmentsList() {
-  const [tab, setTab] = useState<Tab>("Upcoming");
-  const list =
-    tab === "Upcoming" ? UPCOMING : tab === "Past" ? PAST : CANCELLED;
+function RideHistory() {
+  const grouped = ALL_APPOINTMENTS.reduce<Record<string, Appointment[]>>((acc, ride) => {
+    acc[ride.month] = acc[ride.month] ? [...acc[ride.month], ride] : [ride];
+    return acc;
+  }, {});
 
   return (
     <AppShell>
-      <ScreenHeader title="My Appointments" />
-
-      <div className="flex border-b border-[#2A2A2A]">
-        {(["Upcoming", "Past", "Cancelled"] as Tab[]).map((t) => {
-          const active = t === tab;
-          return (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`relative flex-1 py-3 text-xs font-bold uppercase tracking-widest ${active ? "text-white" : "text-[#8A8A8A]"}`}
-            >
-              {t}
-              {active && (
-                <span className="absolute -bottom-px left-0 right-0 mx-auto h-0.5 w-10 bg-[#E31E24]" />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="flex flex-col gap-3 p-4">
-        {list.length === 0 && (
-          <p className="py-12 text-center text-sm text-[#8A8A8A]">
-            Nothing here yet.
-          </p>
+      <ScreenHeader title="Rides / History" />
+      <div className="px-4 pb-4 pt-2">
+        {ALL_APPOINTMENTS.length === 0 ? (
+          <div className="cmt-card mt-10 px-6 py-12 text-center">
+            <CarFront className="mx-auto h-10 w-10 text-[#0a6bdb]" />
+            <p className="mt-3 text-lg font-bold text-[#032558]">No rides yet</p>
+            <p className="mt-1 text-sm text-[#5C6B7A]">
+              Book your first ride to a medical appointment or approved destination.
+            </p>
+            <Link to="/book" className="mt-5 inline-block w-full">
+              <ArcButton block>Book Your First Ride</ArcButton>
+            </Link>
+          </div>
+        ) : (
+          Object.entries(grouped).map(([month, rides]) => (
+            <section key={month} className="mb-6">
+              <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-[#5C6B7A]">
+                {month}
+              </h2>
+              <div className="flex flex-col gap-3">
+                {rides.map((ride) => (
+                  <RideCard key={ride.id} ride={ride} />
+                ))}
+              </div>
+            </section>
+          ))
         )}
-        {list.map((apt) => (
-          <ApptCard key={apt.id} apt={apt} tab={tab} />
-        ))}
       </div>
-
       <BottomNav />
     </AppShell>
   );
 }
 
-function ApptCard({ apt, tab }: { apt: Appointment; tab: Tab }) {
+function RideCard({ ride }: { ride: Appointment }) {
   return (
-    <div className="border border-[#2A2A2A] bg-[#161616]">
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-sm font-extrabold leading-tight">{apt.serviceName}</p>
-            <p className="mt-1 text-xs text-[#8A8A8A]">{apt.date}</p>
-          </div>
-          <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-widest ${statusColor(apt.status)}`}>
-            {apt.status}
-          </span>
+    <div className="cmt-card p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-extrabold text-[#032558]">{ride.serviceName}</p>
+          <p className="mt-1 text-xs text-[#5C6B7A]">{ride.date}</p>
         </div>
-        <p className="mt-3 truncate text-xs text-[#8A8A8A]">{apt.address}</p>
-        {tab === "Cancelled" && apt.cancelReason && (
-          <p className="mt-2 text-xs italic text-[#8A8A8A]">
-            Reason: {apt.cancelReason}
-          </p>
-        )}
+        <StatusBadge status={ride.status} />
       </div>
-      <div className="flex items-center justify-between border-t border-[#2A2A2A] p-3">
-        {tab === "Upcoming" ? (
-          <div className="flex gap-2">
-            <Link
-              to="/appointments/$id/reschedule"
-              params={{ id: apt.id }}
-              className="border border-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white"
-            >
-              Reschedule
-            </Link>
-            <Link
-              to="/appointments/$id/cancel"
-              params={{ id: apt.id }}
-              className="border border-[#E31E24] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#E31E24]"
-            >
-              Cancel
-            </Link>
-          </div>
-        ) : tab === "Past" ? (
-          <Link
-            to="/book"
-            className="border border-[#FFC107] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFC107]"
-          >
-            Book Again
-          </Link>
-        ) : (
-          <div />
-        )}
+      <p className="mt-3 text-sm leading-relaxed text-[#5C6B7A]">
+        {ride.pickup} → {ride.destination}
+      </p>
+      <div className="mt-4 flex gap-2">
         <Link
-          to="/appointments/$id"
-          params={{ id: apt.id }}
-          className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-white"
+          to="/book"
+          onClick={() =>
+            bookingStore.set({
+              rideType: ride.serviceId as RideType,
+              dropoff: ride.destination,
+              dropoffLabel: ride.destination,
+            })
+          }
+          className="inline-flex min-h-10 flex-1 items-center justify-center rounded-xl bg-[#0a6bdb] text-xs font-semibold text-white"
         >
-          View Details <ChevronRight className="h-3.5 w-3.5" />
+          Rebook
+        </Link>
+        <Link
+          to="/appointments/$id/receipt"
+          params={{ id: ride.id }}
+          className="inline-flex min-h-10 flex-1 items-center justify-center border border-[#dce3ec] text-xs font-semibold text-[#032558]"
+        >
+          View Receipt
         </Link>
       </div>
     </div>
   );
 }
-
-// intentionally unused import guard
-export const _tokens = { ArcButton };

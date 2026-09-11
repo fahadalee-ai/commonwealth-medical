@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
 
-export function AppShell({ children }: { children: ReactNode }) {
-  return <div className="arc-shell text-white">{children}</div>;
+export function AppShell({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={`cmt-shell ${className}`}>{children}</div>;
 }

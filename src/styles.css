@@ -4,20 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -59,95 +45,78 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-arc-black: var(--arc-black);
-  --color-arc-surface: var(--arc-surface);
-  --color-arc-red: var(--arc-red);
-  --color-arc-yellow: var(--arc-yellow);
-  --color-arc-white: var(--arc-white);
-  --color-arc-muted: var(--arc-muted);
-  --color-arc-divider: var(--arc-divider);
+  --color-cmt-navy: var(--cmt-navy);
+  --color-cmt-blue: var(--cmt-blue);
+  --color-cmt-bg: var(--cmt-bg);
+  --color-cmt-success: var(--cmt-success);
+  --color-cmt-text: var(--cmt-text);
+  --color-cmt-amber: var(--cmt-amber);
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.625rem;
   --radius: 0;
-  /* ARC brand tokens */
-  --arc-black: #0D0D0D;
-  --arc-surface: #161616;
-  --arc-red: #E31E24;
-  --arc-yellow: #FFC107;
-  --arc-white: #FFFFFF;
-  --arc-muted: #8A8A8A;
-  --arc-divider: #2A2A2A;
+  --cmt-navy: #032558;
+  --cmt-blue: #0a6bdb;
+  --cmt-bg: #f5f7fa;
+  --cmt-success: #1fa463;
+  --cmt-text: #5c6b7a;
+  --cmt-amber: #d97706;
 
-  --background: #0D0D0D;
-  --foreground: #FFFFFF;
-  --card: #161616;
-  --card-foreground: #FFFFFF;
-  --popover: #161616;
-  --popover-foreground: #FFFFFF;
-  --primary: #E31E24;
-  --primary-foreground: #FFFFFF;
-  --secondary: #161616;
-  --secondary-foreground: #FFFFFF;
-  --muted: #161616;
-  --muted-foreground: #8A8A8A;
-  --accent: #FFC107;
-  --accent-foreground: #0D0D0D;
-  --destructive: #E31E24;
-  --destructive-foreground: #FFFFFF;
-  --border: #2A2A2A;
-  --input: #2A2A2A;
-  --ring: #FFC107;
+  --background: #f5f7fa;
+  --foreground: #032558;
+  --card: #ffffff;
+  --card-foreground: #032558;
+  --popover: #ffffff;
+  --popover-foreground: #032558;
+  --primary: #0a6bdb;
+  --primary-foreground: #ffffff;
+  --secondary: #e8eef6;
+  --secondary-foreground: #032558;
+  --muted: #eef1f6;
+  --muted-foreground: #5c6b7a;
+  --accent: #e8eef6;
+  --accent-foreground: #032558;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #dce3ec;
+  --input: #eef1f6;
+  --ring: #0a6bdb;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: #0D0D0D;
-  --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #E31E24;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #161616;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #2A2A2A;
-  --sidebar-ring: #FFC107;
+  --sidebar: #032558;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #0a6bdb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0a3a7a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0a3a7a;
+  --sidebar-ring: #0a6bdb;
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: #032558;
+  --foreground: #ffffff;
+  --card: #0a3a7a;
+  --card-foreground: #ffffff;
+  --popover: #0a3a7a;
+  --popover-foreground: #ffffff;
+  --primary: #0a6bdb;
+  --primary-foreground: #ffffff;
+  --secondary: #0a3a7a;
+  --secondary-foreground: #ffffff;
+  --muted: #0a3a7a;
+  --muted-foreground: #b8c4d4;
+  --accent: #0a3a7a;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #1a4a8a;
+  --input: #1a4a8a;
+  --ring: #0a6bdb;
 }
 
 @layer base {
@@ -157,32 +126,99 @@
   }
 
   body {
-    background-color: var(--arc-black);
-    color: var(--arc-white);
+    background-color: #e4eaf2;
+    color: var(--cmt-navy);
     font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
-  html, body { overscroll-behavior: none; }
+  html,
+  body {
+    overscroll-behavior: none;
+  }
 
-  /* Hide scrollbars everywhere but keep scroll */
-  *::-webkit-scrollbar { display: none; }
-  * { scrollbar-width: none; -ms-overflow-style: none; }
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
 
-@utility arc-shell {
+@utility cmt-shell {
   max-width: 420px;
   min-height: 100dvh;
   margin-left: auto;
   margin-right: auto;
-  background-color: var(--arc-black);
+  background-color: var(--cmt-bg);
   position: relative;
+  box-shadow: 0 0 0 1px rgb(3 37 88 / 6%), 0 24px 60px rgb(3 37 88 / 10%);
 }
 
-@keyframes arc-loading {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
+@utility cmt-card {
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgb(3 37 88 / 6%);
 }
-@utility arc-loading-bar {
-  animation: arc-loading 1.6s ease-in-out infinite;
+
+@keyframes cmt-loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+@utility cmt-loading-bar {
+  animation: cmt-loading 1.6s ease-in-out infinite;
+}
+
+@keyframes cmt-logo-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@utility cmt-logo-in {
+  animation: cmt-logo-in 900ms ease-out both;
+}
+
+@keyframes cmt-pulse-ring {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+}
+@utility cmt-pulse-ring {
+  animation: cmt-pulse-ring 2.4s ease-out infinite;
+}
+
+@keyframes cmt-check-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@utility cmt-check-in {
+  animation: cmt-check-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }

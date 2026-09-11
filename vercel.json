@@ -1,0 +1,20 @@
+{
+  "framework": "tanstack-start",
+  "redirects": [
+    {
+      "source": "/commonwealth-medical",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/commonwealth-medical/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/commonwealth-medical/:path*",
+      "destination": "/:path*",
+      "permanent": false
+    }
+  ]
+}

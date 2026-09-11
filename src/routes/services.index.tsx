@@ -1,78 +1,48 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight, Search } from "lucide-react";
-import { useState, useMemo } from "react";
+import { ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/arc/AppShell";
 import { BottomNav } from "@/components/arc/BottomNav";
 import { ScreenHeader } from "@/components/arc/ScreenHeader";
-import { SERVICES, CATEGORIES, type Category } from "@/lib/services-data";
+import { SERVICES } from "@/lib/services-data";
 
 export const Route = createFileRoute("/services/")({
   component: ServicesList,
-  head: () => ({ meta: [{ title: "Services · ARC Electrical Solutions" }] }),
+  head: () => ({ meta: [{ title: "Services · CMT" }] }),
 });
 
 function ServicesList() {
-  const [query, setQuery] = useState("");
-  const [cat, setCat] = useState<Category>("All");
-
-  const filtered = useMemo(() => {
-    return SERVICES.filter((s) => {
-      const matchesQ =
-        !query || s.name.toLowerCase().includes(query.toLowerCase());
-      const matchesC = cat === "All" || s.categories.includes(cat);
-      return matchesQ && matchesC;
-    });
-  }, [query, cat]);
-
   return (
     <AppShell>
-      <ScreenHeader title="All Services" backTo="/home" />
-
-      <div className="px-4 pt-4">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8A8A8A]" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search services..."
-            className="h-12 w-full border border-[#2A2A2A] bg-[#161616] pl-10 pr-4 text-sm text-white placeholder:text-[#5a5a5a] focus:border-[#FFC107] focus:outline-none"
-          />
-        </div>
-      </div>
-
-      <div className="mt-4 flex gap-2 overflow-x-auto px-4">
-        {CATEGORIES.map((c) => (
-          <button
-            key={c}
-            onClick={() => setCat(c)}
-            className={`h-9 flex-none px-4 text-xs font-bold uppercase tracking-wide ${cat === c ? "bg-[#E31E24] text-white" : "border border-[#2A2A2A] bg-[#161616] text-[#8A8A8A]"}`}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
-
-      <ul className="mt-4">
-        {filtered.map((s) => (
-          <li key={s.id} className="border-t border-[#2A2A2A] last:border-b">
+      <ScreenHeader title="Our Services" backTo="/home" />
+      <ul className="p-4">
+        {SERVICES.map((s) => (
+          <li key={s.id} className="mb-3">
             <Link
               to="/services/$serviceId"
               params={{ serviceId: s.id }}
-              className="flex items-center gap-3 px-4 py-3"
+              className="flex overflow-hidden bg-white shadow-[0_8px_24px_rgba(3,37,88,0.06)]"
             >
-              <div className="h-16 w-16 flex-none overflow-hidden bg-[#161616]">
-                <img src={s.image} alt="" className="h-full w-full object-cover" />
+              <img src={s.image} alt="" className="h-[92px] w-[92px] flex-none object-cover" />
+              <div className="flex min-w-0 flex-1 items-center gap-2 p-3">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-bold uppercase tracking-wide text-[#0a6bdb]">
+                    {s.category}
+                  </p>
+                  <p className="truncate text-sm font-bold text-[#032558]">{s.name}</p>
+                  <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-[#5C6B7A]">
+                    {s.short}
+                  </p>
+                  <p className="mt-1.5 text-xs font-extrabold text-[#0a6bdb]">
+                    From {s.pricing.from}{" "}
+                    <span className="font-semibold text-[#5C6B7A]">· {s.pricing.unit}</span>
+                  </p>
+                </div>
+                <ChevronRight className="h-5 w-5 flex-none text-[#5C6B7A]" />
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-bold">{s.name}</p>
-                <p className="mt-0.5 truncate text-xs text-[#8A8A8A]">{s.short}</p>
-              </div>
-              <ChevronRight className="h-5 w-5 flex-none text-[#8A8A8A]" />
             </Link>
           </li>
         ))}
       </ul>
-
       <BottomNav />
     </AppShell>
   );
