@@ -15,9 +15,12 @@ export const ArcInput = forwardRef<HTMLInputElement, Props>(function ArcInput(
   const uid = useId();
   const inputId = id ?? uid;
   const isPassword = type === "password";
+  const isDateLike =
+    type === "date" || type === "time" || type === "datetime-local" || type === "month";
   const actualType = isPassword && show ? "text" : type;
   const hasValue = Boolean(rest.value ?? rest.defaultValue);
-  const float = focused || hasValue || Boolean(rest.placeholder);
+  // Native date/time fields always draw mm/dd/yyyy, so the label must stay raised.
+  const float = focused || hasValue || Boolean(rest.placeholder) || isDateLike;
 
   return (
     <label className="block" htmlFor={inputId}>
@@ -57,9 +60,11 @@ export const ArcInput = forwardRef<HTMLInputElement, Props>(function ArcInput(
             setFocused(false);
             rest.onBlur?.(e);
           }}
-          className={`h-14 w-full bg-transparent text-[15px] text-[#032558] placeholder:text-[#5C6B7A]/50 focus:outline-none ${
-            label ? "pt-4" : ""
-          } ${prefixIcon ? "pl-10" : "px-4"} ${isPassword ? "pr-12" : "pr-4"} ${className}`}
+          className={`w-full bg-transparent text-[15px] text-[#032558] placeholder:text-[#5C6B7A]/50 focus:outline-none ${
+            isDateLike ? "cmt-date-input h-16" : "h-14"
+          } ${label ? "pt-5" : ""} ${prefixIcon ? "pl-10" : "px-4"} ${
+            isPassword ? "pr-12" : isDateLike ? "pr-3" : "pr-4"
+          } ${className}`}
         />
         {isPassword && (
           <button

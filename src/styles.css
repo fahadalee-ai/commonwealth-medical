@@ -162,6 +162,21 @@
   box-shadow: 0 8px 24px rgb(3 37 88 / 6%);
 }
 
+@utility cmt-date-input {
+  line-height: 1.2;
+}
+
+.cmt-date-input::-webkit-datetime-edit,
+.cmt-date-input::-webkit-datetime-edit-fields-wrapper {
+  padding-top: 0.15rem;
+}
+
+.cmt-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.55;
+  margin-left: 0.25rem;
+}
+
 @keyframes cmt-loading {
   0% {
     transform: translateX(-100%);
