@@ -35,7 +35,7 @@ const slides = [
     image: dispatchImg,
     heading: "A Transportation Partner You Can Count On",
     subtext:
-      "Book your ride, track your driver, and manage your appointments — all from your phone.",
+      "Book your ride, call dispatch, and manage your appointments — all from your phone.",
   },
 ];
 

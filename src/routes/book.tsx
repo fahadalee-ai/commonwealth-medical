@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Check,
@@ -623,19 +623,8 @@ function StepConfirmation() {
           <p className="mt-3 text-xs font-semibold text-[#0a6bdb]">Driver assignment: Pending</p>
         </div>
         <div className="mt-8 flex w-full flex-col gap-3">
-          <Link to="/track/$id" params={{ id: "ride_1001" }} className="w-full">
-            <ArcButton
-              block
-              onClick={() => {
-                bookingStore.reset();
-              }}
-            >
-              Track This Ride
-            </ArcButton>
-          </Link>
           <ArcButton
             block
-            variant="secondary"
             onClick={() => {
               const title = encodeURIComponent("CMT Medical Ride");
               const details = encodeURIComponent(

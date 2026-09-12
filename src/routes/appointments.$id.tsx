@@ -84,16 +84,11 @@ function RideDetail() {
 
       <div className="fixed bottom-0 left-1/2 z-40 flex w-full max-w-[420px] -translate-x-1/2 flex-col gap-2 border-t border-[#dce3ec] bg-white p-4">
         {isActive && (
-          <div className="flex gap-2">
-            <Link to="/track/$id" params={{ id: a.id }} className="flex-1">
-              <ArcButton block>Track Ride</ArcButton>
-            </Link>
-            <Link to="/appointments/$id/cancel" params={{ id: a.id }} className="flex-1">
-              <ArcButton variant="danger" block>
-                Cancel
-              </ArcButton>
-            </Link>
-          </div>
+          <Link to="/appointments/$id/cancel" params={{ id: a.id }}>
+            <ArcButton variant="danger" block>
+              Cancel
+            </ArcButton>
+          </Link>
         )}
         <Link to="/appointments/$id/receipt" params={{ id: a.id }}>
           <ArcButton variant="secondary" block>

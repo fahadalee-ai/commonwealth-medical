@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Safe, reliable non-emergency medical transportation. Book, track, and manage rides to medical appointments.",
+          "Safe, reliable non-emergency medical transportation. Book and manage rides to medical appointments.",
       },
       { property: "og:title", content: "Commonwealth Medical Transportation" },
       {

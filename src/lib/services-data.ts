@@ -59,7 +59,7 @@ export const SERVICES: ServiceInfo[] = [
       "Appointment-aligned pickup windows",
       "MassHealth/PT-1 and broker coordination",
       "Return-trip scheduling",
-      "Live driver tracking on the day of the ride",
+      "Dispatch support on the day of the ride",
     ],
     bestFor: [
       "Primary care and specialist visits",
@@ -71,7 +71,7 @@ export const SERVICES: ServiceInfo[] = [
       "Choose Medical Appointment and enter your pickup address.",
       "Add the clinic name, appointment time, and return preference.",
       "Confirm coverage or PT-1 authorization.",
-      "Track your driver and get help from dispatch if plans change.",
+      "Call dispatch if plans change.",
     ],
     destinations: [
       "Spencer Family Practice",

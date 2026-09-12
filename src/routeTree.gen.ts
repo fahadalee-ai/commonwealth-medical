@@ -36,7 +36,6 @@ import { Route as ProfilePrivacyRouteImport } from './routes/profile.privacy'
 import { Route as ProfileTermsRouteImport } from './routes/profile.terms'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
-import { Route as TrackIdRouteImport } from './routes/track.$id'
 import { Route as WebsiteIndexRouteImport } from './routes/website.index'
 import { Route as WebsiteServicesRouteImport } from './routes/website.services'
 import { Route as AppointmentsIdCancelRouteImport } from './routes/appointments.$id.cancel'
@@ -180,11 +179,6 @@ const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
   path: '/services/$serviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TrackIdRoute = TrackIdRouteImport.update({
-  id: '/track/$id',
-  path: '/track/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -236,7 +230,6 @@ export interface FileRoutesByFullPath {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
-  '/track/$id': typeof TrackIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
   '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
@@ -269,7 +262,6 @@ export interface FileRoutesByTo {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
-  '/track/$id': typeof TrackIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments': typeof AppointmentsIndexRoute
   '/commonwealth-medical': typeof CommonwealthMedicalIndexRoute
@@ -305,7 +297,6 @@ export interface FileRoutesById {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
-  '/track/$id': typeof TrackIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
   '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
@@ -342,7 +333,6 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
-    | '/track/$id'
     | '/website/services'
     | '/appointments/'
     | '/commonwealth-medical/'
@@ -375,7 +365,6 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
-    | '/track/$id'
     | '/website/services'
     | '/appointments'
     | '/commonwealth-medical'
@@ -410,7 +399,6 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
-    | '/track/$id'
     | '/website/services'
     | '/appointments/'
     | '/commonwealth-medical/'
@@ -445,7 +433,6 @@ export interface RootRouteChildren {
   ProfilePrivacyRoute: typeof ProfilePrivacyRoute
   ProfileTermsRoute: typeof ProfileTermsRoute
   ServicesServiceIdRoute: typeof ServicesServiceIdRoute
-  TrackIdRoute: typeof TrackIdRoute
   AppointmentsIndexRoute: typeof AppointmentsIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
@@ -642,13 +629,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesServiceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/track/$id': {
-      id: '/track/$id'
-      path: '/track/$id'
-      fullPath: '/track/$id'
-      preLoaderRoute: typeof TrackIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/website/': {
       id: '/website/'
       path: '/'
@@ -752,7 +732,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProfilePrivacyRoute: ProfilePrivacyRoute,
   ProfileTermsRoute: ProfileTermsRoute,
   ServicesServiceIdRoute: ServicesServiceIdRoute,
-  TrackIdRoute: TrackIdRoute,
   AppointmentsIndexRoute: AppointmentsIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,

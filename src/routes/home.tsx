@@ -92,18 +92,11 @@ function HomeScreen() {
             <p className="mt-3 text-sm leading-relaxed text-[#5C6B7A]">
               {upcoming.pickup} → {upcoming.destination}
             </p>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <Link
-                to="/track/$id"
-                params={{ id: upcoming.id }}
-                className="inline-flex min-h-11 items-center justify-center bg-[#0a6bdb] text-sm font-semibold text-white"
-              >
-                Track
-              </Link>
+            <div className="mt-4">
               <Link
                 to="/appointments/$id"
                 params={{ id: upcoming.id }}
-                className="inline-flex min-h-11 items-center justify-center border border-[#dce3ec] bg-white text-sm font-semibold text-[#032558]"
+                className="inline-flex min-h-11 w-full items-center justify-center bg-[#0a6bdb] text-sm font-semibold text-white"
               >
                 View Details
               </Link>
