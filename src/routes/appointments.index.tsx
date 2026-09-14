@@ -21,7 +21,7 @@ function RideHistory() {
 
   return (
     <AppShell>
-      <ScreenHeader title="Rides / History" />
+      <ScreenHeader title="Rides" />
       <div className="px-4 pb-4 pt-2">
         {ALL_APPOINTMENTS.length === 0 ? (
           <div className="cmt-card mt-10 px-6 py-12 text-center">
@@ -59,7 +59,7 @@ function RideCard({ ride }: { ride: Appointment }) {
     <div className="cmt-card p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-extrabold text-[#032558]">{ride.serviceName}</p>
+          <p className="text-[15px] font-extrabold text-[#032558]">{ride.serviceName}</p>
           <p className="mt-1 text-xs text-[#5C6B7A]">{ride.date}</p>
         </div>
         <StatusBadge status={ride.status} />

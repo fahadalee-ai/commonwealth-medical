@@ -33,6 +33,6 @@ export function signOut() {
 }
 
 export function getFirstName() {
-  if (typeof window === "undefined") return "Alex";
-  return localStorage.getItem(AUTH_KEYS.firstName) ?? "Alex";
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem(AUTH_KEYS.firstName) ?? "";
 }

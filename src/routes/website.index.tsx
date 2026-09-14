@@ -61,13 +61,19 @@ function WebsiteHome() {
       </section>
 
       <section className="mx-auto max-w-[1180px] px-5 py-16">
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#0a6bdb]">
-          Why choose CMT
-        </p>
-        <div className="mt-4 grid gap-10 lg:grid-cols-2">
-          <h2 className="text-3xl font-extrabold leading-tight md:text-4xl">
-            A Reliable Part of the Healthcare Journey.
-          </h2>
+        <span className="cmt-metal-pill">Non-emergency medical transportation</span>
+        <div className="mt-6 grid gap-10 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-extrabold leading-tight md:text-4xl">
+              A Reliable Part of the <span className="text-[#0a6bdb]">Healthcare</span> Journey.
+            </h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#5C6B7A] md:text-base">
+              {CMT.name} provides safe, reliable, and compassionate non-emergency medical
+              transportation (NEMT) for ambulatory patients. We primarily serve clients through
+              programs such as MassHealth/PT-1 and applicable transportation brokers, ensuring
+              individuals can reach their medical appointments with dignity and care.
+            </p>
+          </div>
           <div className="grid gap-6 sm:grid-cols-2">
             {values.map((v) => (
               <div key={v.title} className="flex gap-3">

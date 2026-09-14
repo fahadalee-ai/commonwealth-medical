@@ -95,9 +95,9 @@ function RideDetail() {
             View Receipt
           </ArcButton>
         </Link>
-        <Link to="/support">
+        <Link to="/support/$bookingId" params={{ bookingId: a.id }}>
           <ArcButton variant="ghost" block>
-            Contact Support
+            Message about this ride
           </ArcButton>
         </Link>
       </div>

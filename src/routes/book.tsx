@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Check,
+  ChevronDown,
   Stethoscope,
   Building2,
   HeartPulse,
@@ -9,6 +10,8 @@ import {
   MapPin,
   Home,
   Star,
+  CalendarDays,
+  ShieldCheck,
 } from "lucide-react";
 import { AppShell } from "@/components/arc/AppShell";
 import { ScreenHeader } from "@/components/arc/ScreenHeader";
@@ -21,40 +24,49 @@ import {
   useBooking,
   RIDE_TYPE_LABELS,
   type RideType,
-  type MobilityNeed,
   type CoveragePlan,
 } from "@/lib/booking-store";
+import confirmBg from "@/assets/onboarding/welcome.jpg";
 
 export const Route = createFileRoute("/book")({
   component: BookFlow,
   head: () => ({ meta: [{ title: "Book a Ride · CMT" }] }),
 });
 
-const TOTAL = 7;
+const WIZARD_STEPS = 4;
+const CONFIRM_STEP = 5;
+const STEP_LABELS = ["Service", "Trip", "When", "Review"];
+const STEP_HINTS = [
+  "Choose the ride that matches your appointment.",
+  "Tell us where to pick you up and where you are going.",
+  "Pick a day and a time that works for you.",
+  "Look everything over, then confirm your ride.",
+];
+const NEXT_LABELS = ["Continue to trip details", "Continue to date & time", "Review booking", "Confirm booking"];
 
 const rideTypes: { id: RideType; title: string; desc: string; icon: typeof Stethoscope }[] = [
   {
     id: "medical-appointment",
     title: "Medical Appointment",
-    desc: "Doctor visits, specialists, labs, and imaging.",
+    desc: "Doctors, specialists, labs, and imaging.",
     icon: Stethoscope,
   },
   {
     id: "healthcare-facility",
-    title: "Healthcare Facility Visit",
-    desc: "Hospitals, clinics, dialysis, and outpatient centers.",
+    title: "Healthcare Facility",
+    desc: "Hospitals, clinics, dialysis, and outpatient care.",
     icon: Building2,
   },
   {
     id: "treatment-program",
-    title: "Treatment Program (recurring)",
-    desc: "Repeat rides for ongoing treatment schedules.",
+    title: "Treatment Program",
+    desc: "Recurring rides for ongoing treatment.",
     icon: HeartPulse,
   },
   {
     id: "approved-destination",
-    title: "Approved Destination (other)",
-    desc: "Pharmacies and other broker-approved trips.",
+    title: "Approved Destination",
+    desc: "Pharmacies and other broker-approved stops.",
     icon: MapPinned,
   },
 ];
@@ -64,7 +76,7 @@ function BookFlow() {
   const b = useBooking();
   const navigate = useNavigate();
 
-  const next = () => setStep((s) => Math.min(s + 1, TOTAL));
+  const next = () => setStep((s) => Math.min(s + 1, CONFIRM_STEP));
   const prev = () => (step === 1 ? navigate({ to: "/home" }) : setStep(step - 1));
 
   const submit = () => {
@@ -75,49 +87,50 @@ function BookFlow() {
       String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
       String.fromCharCode(65 + Math.floor(Math.random() * 26));
     bookingStore.set({ referenceId: ref });
-    setStep(7);
+    setStep(CONFIRM_STEP);
   };
 
   const canContinue = (() => {
     if (step === 1) return !!b.rideType;
-    if (step === 2) return !!b.pickup && !!b.dropoff;
+    if (step === 2) return !!b.pickup && !!b.dropoff && !!b.coverage;
     if (step === 3) return !!b.date && !!b.time;
-    if (step === 4) return !!b.mobility;
-    if (step === 5) return !!b.coverage;
     return true;
   })();
 
-  if (step === 7) return <StepConfirmation />;
+  if (step === CONFIRM_STEP) return <StepConfirmation />;
 
   return (
     <AppShell>
       <ScreenHeader
-        title={`Book a Ride · ${step} of 6`}
+        title="Book a Ride"
         backTo={step === 1 ? "/home" : undefined}
         right={
           step > 1 ? (
-            <button onClick={prev} className="min-h-11 px-2 text-sm font-semibold text-[#0a6bdb]">
+            <button onClick={prev} className="min-h-11 px-2 text-sm font-bold text-[#0a6bdb]">
               Back
             </button>
           ) : null
         }
       />
-      <StepIndicator total={6} current={step} />
+      <StepIndicator total={WIZARD_STEPS} current={step} labels={STEP_LABELS} />
 
-      <div className="px-4 pb-32">
+      <div className="cmt-rise px-4 pb-8">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0a6bdb]">
+          Step {step} of {WIZARD_STEPS}
+        </p>
         {step === 1 && <StepRideType />}
         {step === 2 && <StepLocations />}
         {step === 3 && <StepDateTime />}
-        {step === 4 && <StepMobility />}
-        {step === 5 && <StepCoverage />}
-        {step === 6 && <StepReview onEdit={setStep} />}
+        {step === 4 && <StepReview onEdit={setStep} />}
       </div>
 
-      <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-[420px] -translate-x-1/2 border-t border-[#dce3ec] bg-white p-4">
-        <ArcButton block disabled={!canContinue} onClick={step === 6 ? submit : next}>
-          {step === 6 ? "Confirm Booking" : "Continue"}
+      <div className="sticky bottom-[calc(72px+env(safe-area-inset-bottom))] z-30 border-t border-[#e8eef6] bg-white/95 p-4 backdrop-blur">
+        <ArcButton block disabled={!canContinue} onClick={step === WIZARD_STEPS ? submit : next}>
+          {NEXT_LABELS[step - 1]}
         </ArcButton>
+        <p className="mt-2 text-center text-[11px] text-[#5C6B7A]">{STEP_HINTS[step - 1]}</p>
       </div>
+      <BottomNav />
     </AppShell>
   );
 }
@@ -126,33 +139,45 @@ function StepRideType() {
   const b = useBooking();
   return (
     <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">
-        What type of transportation do you need?
+      <h2 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-[#032558]">
+        What kind of ride do you need?
       </h2>
-      <ul className="mt-4 flex flex-col gap-3">
+      <p className="mt-1.5 text-sm leading-relaxed text-[#5C6B7A]">
+        Select one. You can change this later on the review screen.
+      </p>
+      <ul className="mt-5 flex flex-col gap-3">
         {rideTypes.map((r) => {
           const selected = b.rideType === r.id;
           return (
             <li key={r.id}>
               <button
+                type="button"
                 onClick={() => bookingStore.set({ rideType: r.id })}
-                className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left ${
-                  selected ? "border-[#0a6bdb] bg-[#0a6bdb]/6" : "border-[#dce3ec] bg-white"
+                className={`flex w-full items-center gap-3 border p-3.5 text-left transition-colors ${
+                  selected
+                    ? "border-[#0a6bdb] bg-[#0a6bdb] text-white"
+                    : "border-transparent bg-white text-[#032558] shadow-[0_8px_24px_rgba(3,37,88,0.06)]"
                 }`}
               >
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#0a6bdb]/10 text-[#0a6bdb]">
+                <span
+                  className={`flex h-12 w-12 flex-none items-center justify-center ${
+                    selected ? "bg-white/15 text-white" : "bg-[#0a6bdb]/10 text-[#0a6bdb]"
+                  }`}
+                >
                   <r.icon className="h-5 w-5" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold text-[#032558]">{r.title}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-[#5C6B7A]">{r.desc}</p>
+                  <p className="text-sm font-extrabold">{r.title}</p>
+                  <p className={`mt-0.5 text-xs leading-relaxed ${selected ? "text-white/80" : "text-[#5C6B7A]"}`}>
+                    {r.desc}
+                  </p>
                 </div>
                 <span
-                  className={`mt-1 flex h-6 w-6 flex-none items-center justify-center rounded-full border ${
-                    selected ? "border-[#0a6bdb] bg-[#0a6bdb]" : "border-[#dce3ec] bg-white"
+                  className={`flex h-6 w-6 flex-none items-center justify-center border ${
+                    selected ? "border-white bg-white text-[#0a6bdb]" : "border-[#dce3ec] bg-white"
                   }`}
                 >
-                  {selected && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+                  {selected && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
                 </span>
               </button>
             </li>
@@ -173,75 +198,182 @@ function StepLocations() {
   const b = useBooking();
   return (
     <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">
-        Pickup & Destination
+      <h2 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-[#032558]">
+        Pickup & destination
       </h2>
-      <div className="mt-5 flex flex-col gap-4">
-        <ArcInput
-          label="Pickup Location"
-          value={b.pickup ?? ""}
-          onChange={(e) => bookingStore.set({ pickup: e.target.value, pickupLabel: e.target.value })}
-          placeholder="Search address"
-          prefixIcon={<MapPin className="h-4 w-4" />}
-        />
-        <div className="flex gap-2 overflow-x-auto">
-          <button
-            type="button"
-            onClick={() =>
-              bookingStore.set({
-                pickup: "Current location · Spencer, MA",
-                pickupLabel: "Current location",
-              })
-            }
-            className="flex min-h-10 flex-none items-center gap-1.5 rounded-full bg-white px-3 text-xs font-semibold text-[#032558] ring-1 ring-[#dce3ec]"
-          >
-            <MapPin className="h-3.5 w-3.5 text-[#0a6bdb]" /> Current location
-          </button>
-          {SAVED.slice(0, 1).map((s) => (
-            <button
-              key={s.label}
-              type="button"
-              onClick={() => bookingStore.set({ pickup: s.value, pickupLabel: s.label })}
-              className="flex min-h-10 flex-none items-center gap-1.5 rounded-full bg-white px-3 text-xs font-semibold text-[#032558] ring-1 ring-[#dce3ec]"
-            >
-              <Home className="h-3.5 w-3.5 text-[#0a6bdb]" /> {s.label}
-            </button>
-          ))}
-        </div>
-
-        <ArcInput
-          label="Drop-off Location / Destination"
-          value={b.dropoff ?? ""}
-          onChange={(e) =>
-            bookingStore.set({ dropoff: e.target.value, dropoffLabel: e.target.value })
-          }
-          placeholder="Facility name or address"
-          prefixIcon={<MapPinned className="h-4 w-4" />}
-        />
-        <div className="flex gap-2 overflow-x-auto">
-          {SAVED.slice(1).map((s) => (
-            <button
-              key={s.label}
-              type="button"
-              onClick={() => bookingStore.set({ dropoff: s.value, dropoffLabel: s.label })}
-              className="flex min-h-10 flex-none items-center gap-1.5 rounded-full bg-white px-3 text-xs font-semibold text-[#032558] ring-1 ring-[#dce3ec]"
-            >
-              <Star className="h-3.5 w-3.5 text-[#0a6bdb]" /> {s.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(3,37,88,0.06)]">
-          <img
-            alt="Route preview"
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=900&q=70"
-            className="h-36 w-full object-cover"
+      <p className="mt-1.5 text-sm leading-relaxed text-[#5C6B7A]">
+        Use a saved place or type an address. Then confirm how the ride is covered.
+      </p>
+      <div className="mt-5 flex flex-col gap-5">
+        <div>
+          <ArcInput
+            label="Pickup Location"
+            value={b.pickup ?? ""}
+            onChange={(e) => bookingStore.set({ pickup: e.target.value, pickupLabel: e.target.value })}
+            placeholder="Search address"
+            prefixIcon={<MapPin className="h-4 w-4" />}
           />
-          <p className="px-4 py-3 text-xs leading-relaxed text-[#5C6B7A]">
-            Mini map preview · {b.pickupLabel || "Pickup"} → {b.dropoffLabel || "Destination"}
-          </p>
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+            <Chip
+              icon={<MapPin className="h-3.5 w-3.5" />}
+              active={b.pickupLabel === "Current location"}
+              onClick={() =>
+                bookingStore.set({
+                  pickup: "Current location · Spencer, MA",
+                  pickupLabel: "Current location",
+                })
+              }
+            >
+              Current location
+            </Chip>
+            <Chip
+              icon={<Home className="h-3.5 w-3.5" />}
+              active={b.pickupLabel === "Home"}
+              onClick={() => bookingStore.set({ pickup: SAVED[0].value, pickupLabel: SAVED[0].label })}
+            >
+              Home
+            </Chip>
+          </div>
+        </div>
+
+        <div>
+          <ArcInput
+            label="Drop-off Location / Destination"
+            value={b.dropoff ?? ""}
+            onChange={(e) =>
+              bookingStore.set({ dropoff: e.target.value, dropoffLabel: e.target.value })
+            }
+            placeholder="Facility name or address"
+            prefixIcon={<MapPinned className="h-4 w-4" />}
+          />
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+            {SAVED.slice(1).map((s) => (
+              <Chip
+                key={s.label}
+                icon={<Star className="h-3.5 w-3.5" />}
+                active={b.dropoffLabel === s.label}
+                onClick={() => bookingStore.set({ dropoff: s.value, dropoffLabel: s.label })}
+              >
+                {s.label}
+              </Chip>
+            ))}
+          </div>
+        </div>
+
+        <CoverageDropdown />
+
+        <div className="overflow-hidden bg-white shadow-[0_8px_24px_rgba(3,37,88,0.06)]">
+          <div className="relative">
+            <img
+              alt="Route from pickup to destination"
+              src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=900&q=70"
+              className="h-36 w-full object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-[#032558]/80 px-4 py-2.5">
+              <p className="text-[11px] font-semibold leading-relaxed text-white">
+                {b.pickupLabel || "Pickup"} → {b.dropoffLabel || "Destination"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Chip({
+  children,
+  icon,
+  active,
+  onClick,
+}: {
+  children: string;
+  icon: ReactNode;
+  active?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex min-h-10 flex-none items-center gap-1.5 px-3 text-xs font-bold ${
+        active ? "bg-[#032558] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
+      }`}
+    >
+      <span className={active ? "text-[#4da6ff]" : "text-[#0a6bdb]"}>{icon}</span>
+      {children}
+    </button>
+  );
+}
+
+const COVERAGE: CoveragePlan[] = [
+  "MassHealth/PT-1",
+  "Transportation Broker (select)",
+  "Private Pay",
+  "Other",
+];
+
+function CoverageDropdown() {
+  const b = useBooking();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative bg-white p-4 shadow-[0_8px_24px_rgba(3,37,88,0.06)]">
+      <div className="mb-3 flex items-center gap-2">
+        <ShieldCheck className="h-4 w-4 text-[#0a6bdb]" />
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#032558]">
+          Transportation authorization
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex h-14 w-full items-center justify-between bg-[#eef1f6] px-4 text-left text-[15px] font-semibold text-[#032558]"
+      >
+        <span>{b.coverage ?? "Select authorization"}</span>
+        <ChevronDown className={`h-4 w-4 text-[#5C6B7A] ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <ul className="absolute left-4 right-4 z-20 mt-1 border border-[#dce3ec] bg-white shadow-[0_8px_24px_rgba(3,37,88,0.12)]">
+          {COVERAGE.map((c) => (
+            <li key={c}>
+              <button
+                type="button"
+                onClick={() => {
+                  bookingStore.set({ coverage: c });
+                  setOpen(false);
+                }}
+                className={`flex min-h-12 w-full items-center px-4 text-left text-sm ${
+                  b.coverage === c ? "bg-[#0a6bdb] font-semibold text-white" : "text-[#032558]"
+                }`}
+              >
+                {c}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {b.coverage === "Transportation Broker (select)" && (
+        <div className="mt-3">
+          <ArcInput
+            label="Broker / Health Plan Name"
+            value={b.brokerName ?? ""}
+            onChange={(e) => bookingStore.set({ brokerName: e.target.value })}
+            placeholder=" "
+          />
+        </div>
+      )}
+      <div className="mt-3">
+        <ArcInput
+          label="Authorization / Reference Number"
+          value={b.authNumber ?? ""}
+          onChange={(e) => bookingStore.set({ authNumber: e.target.value })}
+          placeholder="Optional"
+        />
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-[#5C6B7A]">
+        Eligible trips are typically $0 with MassHealth / PT-1 when authorized.
+      </p>
     </div>
   );
 }
@@ -270,28 +402,36 @@ function StepDateTime() {
 
   return (
     <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">Date & Time</h2>
-      <div className="mt-4 flex gap-2 overflow-x-auto">
+      <h2 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-[#032558]">
+        When should we pick you up?
+      </h2>
+      <p className="mt-1.5 text-sm leading-relaxed text-[#5C6B7A]">
+        Tap a day, then choose a window. Tap again to clear a time.
+      </p>
+
+      <p className="cmt-section mt-5">Date</p>
+      <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
         {days.map((d) => {
           const sel = b.date === d.key;
           return (
             <button
               key={d.key}
-              onClick={() => bookingStore.set({ date: d.key })}
-              className={`flex h-20 w-16 flex-none flex-col items-center justify-center rounded-2xl ${
+              type="button"
+              onClick={() => bookingStore.set({ date: sel ? undefined : d.key })}
+              className={`flex h-[84px] w-[58px] flex-none flex-col items-center justify-center ${
                 sel ? "bg-[#0a6bdb] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
               }`}
             >
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">
                 {d.day}
               </span>
-              <span className="text-2xl font-extrabold leading-none">{d.num}</span>
+              <span className="mt-1 text-[22px] font-extrabold leading-none">{d.num}</span>
             </button>
           );
         })}
       </div>
 
-      <p className="mt-6 text-xs font-bold uppercase tracking-wide text-[#5C6B7A]">Time</p>
+      <p className="cmt-section mt-6">Time</p>
       <div className="mt-2 flex gap-2">
         {(["Morning", "Afternoon", "Exact"] as const).map((slot) => {
           const sel = b.timeSlot === slot || b.time === slot;
@@ -309,10 +449,8 @@ function StepDateTime() {
                   time: slot === "Exact" ? undefined : slot,
                 });
               }}
-              className={`min-h-11 flex-1 text-xs font-bold ${
-                sel
-                  ? "bg-[#0a6bdb] text-white"
-                  : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
+              className={`min-h-11 flex-1 text-xs font-extrabold ${
+                sel ? "bg-[#0a6bdb] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
               }`}
             >
               {slot}
@@ -335,7 +473,7 @@ function StepDateTime() {
                   }
                   bookingStore.set({ time: t, timeSlot: "Exact" });
                 }}
-                className={`h-11 text-xs font-bold ${
+                className={`h-11 text-xs font-extrabold ${
                   sel ? "bg-[#032558] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
                 }`}
               >
@@ -349,21 +487,12 @@ function StepDateTime() {
       <div className="cmt-card mt-6 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-bold text-[#032558]">Ride schedule</p>
+            <p className="text-sm font-extrabold text-[#032558]">Ride schedule</p>
             <p className="text-xs text-[#5C6B7A]">
-              {b.recurring ? "Recurring Ride" : "One-Time Ride"}
+              {b.recurring ? "Recurring ride" : "One-time ride"}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => bookingStore.set({ recurring: !b.recurring })}
-            className={`flex h-7 w-12 items-center rounded-full p-0.5 ${
-              b.recurring ? "justify-end bg-[#0a6bdb]" : "justify-start bg-[#dce3ec]"
-            }`}
-            aria-label="Toggle recurring"
-          >
-            <span className="h-6 w-6 rounded-full bg-white shadow" />
-          </button>
+          <Switch on={!!b.recurring} onClick={() => bookingStore.set({ recurring: !b.recurring })} label="Toggle recurring" />
         </div>
         {b.recurring && (
           <div className="mt-4">
@@ -375,7 +504,7 @@ function StepDateTime() {
                     key={d}
                     type="button"
                     onClick={() => toggleDay(d)}
-                    className={`min-h-10 rounded-full px-3 text-xs font-bold ${
+                    className={`min-h-10 px-3 text-xs font-extrabold ${
                       on ? "bg-[#0a6bdb] text-white" : "bg-[#F5F7FA] text-[#032558]"
                     }`}
                   >
@@ -398,17 +527,12 @@ function StepDateTime() {
 
       <div className="cmt-card mt-3 p-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-bold text-[#032558]">Do you need a return ride?</p>
-          <button
-            type="button"
+          <p className="text-sm font-extrabold text-[#032558]">Need a return ride?</p>
+          <Switch
+            on={!!b.returnRide}
             onClick={() => bookingStore.set({ returnRide: !b.returnRide })}
-            className={`flex h-7 w-12 items-center rounded-full p-0.5 ${
-              b.returnRide ? "justify-end bg-[#0a6bdb]" : "justify-start bg-[#dce3ec]"
-            }`}
-            aria-label="Toggle return ride"
-          >
-            <span className="h-6 w-6 rounded-full bg-white shadow" />
-          </button>
+            label="Toggle return ride"
+          />
         </div>
         {b.returnRide && (
           <div className="mt-3 grid grid-cols-2 gap-2">
@@ -416,13 +540,9 @@ function StepDateTime() {
               <button
                 key={t}
                 type="button"
-                onClick={() =>
-                  bookingStore.set({ returnTime: b.returnTime === t ? undefined : t })
-                }
-                className={`min-h-11 rounded-xl text-xs font-bold ${
-                  b.returnTime === t
-                    ? "bg-[#0a6bdb] text-white"
-                    : "bg-[#F5F7FA] text-[#032558]"
+                onClick={() => bookingStore.set({ returnTime: b.returnTime === t ? undefined : t })}
+                className={`min-h-11 text-xs font-extrabold ${
+                  b.returnTime === t ? "bg-[#0a6bdb] text-white" : "bg-[#F5F7FA] text-[#032558]"
                 }`}
               >
                 {t}
@@ -435,109 +555,18 @@ function StepDateTime() {
   );
 }
 
-const MOBILITY: MobilityNeed[] = [
-  "Ambulatory",
-  "Wheelchair",
-  "Stretcher",
-  "Walker/Cane Assistance",
-];
-
-function StepMobility() {
-  const b = useBooking();
+function Switch({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) {
   return (
-    <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">
-        Mobility & Special Requirements
-      </h2>
-      <div className="mt-4 flex flex-col gap-2">
-        {MOBILITY.map((m) => {
-          const sel = b.mobility === m;
-          return (
-            <button
-              key={m}
-              onClick={() => bookingStore.set({ mobility: m })}
-              className={`flex min-h-14 items-center justify-between rounded-2xl px-4 text-left text-sm font-bold ${
-                sel ? "bg-[#0a6bdb] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
-              }`}
-            >
-              {m}
-              {sel && <Check className="h-4 w-4" />}
-            </button>
-          );
-        })}
-      </div>
-      <div className="mt-5">
-        <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-[#5C6B7A]">
-          Additional notes
-        </label>
-        <textarea
-          value={b.notes ?? ""}
-          onChange={(e) => bookingStore.set({ notes: e.target.value })}
-          rows={4}
-          placeholder="e.g., needs assistance carrying oxygen tank"
-          className="w-full resize-none rounded-xl border border-transparent bg-[#eef1f6] p-4 text-sm text-[#032558] placeholder:text-[#5C6B7A]/60 focus:border-[#032558] focus:outline-none focus:ring-2 focus:ring-[#032558]/10"
-        />
-      </div>
-      <div className="cmt-card mt-4 flex items-center justify-between p-4">
-        <p className="text-sm font-bold text-[#032558]">Will someone be riding with you?</p>
-        <button
-          type="button"
-          onClick={() => bookingStore.set({ companion: !b.companion })}
-          className={`flex h-7 w-12 items-center rounded-full p-0.5 ${
-            b.companion ? "justify-end bg-[#0a6bdb]" : "justify-start bg-[#dce3ec]"
-          }`}
-          aria-label="Toggle companion"
-        >
-          <span className="h-6 w-6 rounded-full bg-white shadow" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-const COVERAGE: CoveragePlan[] = [
-  "MassHealth/PT-1",
-  "Transportation Broker (select)",
-  "Private Pay",
-  "Other",
-];
-
-function StepCoverage() {
-  const b = useBooking();
-  return (
-    <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">
-        Confirm Your Transportation Authorization
-      </h2>
-      <div className="mt-4 flex flex-col gap-2">
-        {COVERAGE.map((c) => {
-          const sel = b.coverage === c;
-          return (
-            <button
-              key={c}
-              onClick={() => bookingStore.set({ coverage: c })}
-              className={`flex min-h-14 items-center justify-between rounded-2xl px-4 text-left text-sm font-bold ${
-                sel ? "bg-[#0a6bdb] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
-              }`}
-            >
-              {c}
-              {sel && <Check className="h-4 w-4" />}
-            </button>
-          );
-        })}
-      </div>
-      <div className="mt-4">
-        <ArcInput
-          label="Authorization / Reference Number"
-          value={b.authNumber ?? ""}
-          onChange={(e) => bookingStore.set({ authNumber: e.target.value })}
-          placeholder="Optional"
-        />
-      </div>
-      <p className="mt-4 text-sm leading-relaxed text-[#5C6B7A]">
-        Your health plan, PT-1, or transportation broker authorizes your eligible transportation.
-      </p>
-    </div>
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={onClick}
+      className={`flex h-7 w-12 items-center p-0.5 ${on ? "justify-end bg-[#0a6bdb]" : "justify-start bg-[#dce3ec]"}`}
+    >
+      <span className="h-6 w-6 bg-white shadow" />
+    </button>
   );
 }
 
@@ -545,31 +574,29 @@ function StepReview({ onEdit }: { onEdit: (n: number) => void }) {
   const b = useBooking();
   return (
     <div>
-      <h2 className="text-xl font-extrabold tracking-tight text-[#032558]">Review & Confirm</h2>
-      <p className="mt-1 text-sm text-[#5C6B7A]">Estimated arrival window: 15–20 minutes before pickup.</p>
-      <div className="cmt-card mt-4">
-        <Row
-          label="Ride type"
-          value={b.rideType ? RIDE_TYPE_LABELS[b.rideType] : "—"}
-          onEdit={() => onEdit(1)}
-        />
-        <Row
-          label="Pickup"
-          value={b.pickupLabel || b.pickup || "—"}
-          onEdit={() => onEdit(2)}
-        />
-        <Row
-          label="Drop-off"
-          value={b.dropoffLabel || b.dropoff || "—"}
-          onEdit={() => onEdit(2)}
-        />
+      <h2 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-[#032558]">
+        Review & confirm
+      </h2>
+      <p className="mt-1.5 text-sm leading-relaxed text-[#5C6B7A]">
+        Driver arrives 15–20 minutes before pickup. Edit any line if something looks off.
+      </p>
+      <div className="cmt-card mt-5 overflow-hidden">
+        <div className="bg-[#032558] px-4 py-3 text-white">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-white/70">
+            Trip summary
+          </p>
+          <p className="mt-1 text-base font-extrabold">
+            {b.rideType ? RIDE_TYPE_LABELS[b.rideType] : "Ride"}
+          </p>
+        </div>
+        <Row label="Pickup" value={b.pickupLabel || b.pickup || "—"} onEdit={() => onEdit(2)} />
+        <Row label="Drop-off" value={b.dropoffLabel || b.dropoff || "—"} onEdit={() => onEdit(2)} />
         <Row
           label="Date & time"
           value={b.date && b.time ? `${b.date} · ${b.time}` : "—"}
           onEdit={() => onEdit(3)}
         />
-        <Row label="Mobility" value={b.mobility ?? "—"} onEdit={() => onEdit(4)} />
-        <Row label="Coverage" value={b.coverage ?? "—"} onEdit={() => onEdit(5)} last />
+        <Row label="Authorization" value={b.coverage ?? "—"} onEdit={() => onEdit(2)} last />
       </div>
     </div>
   );
@@ -589,10 +616,10 @@ function Row({
   return (
     <div className={`flex items-start justify-between gap-4 p-4 ${last ? "" : "border-b border-[#eef1f6]"}`}>
       <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#5C6B7A]">{label}</p>
-        <p className="mt-1 text-sm text-[#032558]">{value}</p>
+        <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#5C6B7A]">{label}</p>
+        <p className="mt-1 text-sm font-semibold text-[#032558]">{value}</p>
       </div>
-      <button onClick={onEdit} className="text-sm font-semibold text-[#0a6bdb]">
+      <button type="button" onClick={onEdit} className="text-sm font-bold text-[#0a6bdb]">
         Edit
       </button>
     </div>
@@ -604,50 +631,71 @@ function StepConfirmation() {
   const navigate = useNavigate();
   return (
     <AppShell>
-      <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 text-center">
-        <div className="cmt-check-in flex h-24 w-24 items-center justify-center rounded-full bg-[#1FA463] text-white">
-          <Check className="h-12 w-12" strokeWidth={3} />
-        </div>
-        <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#032558]">
-          Your Ride is Confirmed!
-        </h1>
-        <div className="cmt-card mt-6 w-full p-4 text-left">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[#5C6B7A]">Ride ID</p>
-          <p className="text-lg font-extrabold text-[#0a6bdb]">{b.referenceId ?? "—"}</p>
-          <p className="mt-3 text-sm text-[#032558]">
-            {b.date} · {b.time}
+      <div className="relative flex min-h-dvh flex-col overflow-hidden px-6 pb-28 pt-16 text-center">
+        <img
+          src={confirmBg}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-white/78" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F5F7FA]/90 via-[#F5F7FA]/70 to-[#F5F7FA]/92" />
+
+        <div className="relative z-10 flex flex-1 flex-col">
+          <div className="cmt-check-in mx-auto flex h-20 w-20 items-center justify-center bg-[#1FA463] text-white">
+            <Check className="h-10 w-10" strokeWidth={3} />
+          </div>
+          <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#0a6bdb]">
+            Booking confirmed
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-[#5C6B7A]">
-            {b.pickupLabel || b.pickup} → {b.dropoffLabel || b.dropoff}
+          <h1 className="mt-2 text-[28px] font-extrabold leading-tight tracking-tight text-[#032558]">
+            Your ride is set
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-[#5C6B7A]">
+            Dispatch will assign a driver. Keep this ride ID for your records.
           </p>
-          <p className="mt-3 text-xs font-semibold text-[#0a6bdb]">Driver assignment: Pending</p>
-        </div>
-        <div className="mt-8 flex w-full flex-col gap-3">
-          <ArcButton
-            block
-            onClick={() => {
-              const title = encodeURIComponent("CMT Medical Ride");
-              const details = encodeURIComponent(
-                `${b.pickupLabel || "Pickup"} to ${b.dropoffLabel || "Destination"}`,
-              );
-              window.open(
-                `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}`,
-                "_blank",
-              );
-            }}
-          >
-            Add to Calendar
-          </ArcButton>
-          <ArcButton
-            block
-            variant="ghost"
-            onClick={() => {
-              bookingStore.reset();
-              navigate({ to: "/home" });
-            }}
-          >
-            Back to Home
-          </ArcButton>
+          <div className="mt-8 bg-white p-5 text-left text-[#032558] shadow-[0_16px_40px_rgba(3,37,88,0.10)]">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#5C6B7A]">Ride ID</p>
+              <CalendarDays className="h-4 w-4 text-[#0a6bdb]" />
+            </div>
+            <p className="mt-1 text-xl font-extrabold text-[#0a6bdb]">{b.referenceId ?? "—"}</p>
+            <p className="mt-4 text-sm font-bold">
+              {b.date} · {b.time}
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-[#5C6B7A]">
+              {b.pickupLabel || b.pickup} → {b.dropoffLabel || b.dropoff}
+            </p>
+            <p className="mt-4 bg-[#eef6ff] px-3 py-2 text-xs font-bold text-[#0a6bdb]">
+              Driver assignment: Pending
+            </p>
+          </div>
+          <div className="mt-8 flex w-full flex-col gap-3">
+            <ArcButton
+              block
+              onClick={() => {
+                const title = encodeURIComponent("CMT Medical Ride");
+                const details = encodeURIComponent(
+                  `${b.pickupLabel || "Pickup"} to ${b.dropoffLabel || "Destination"}`,
+                );
+                window.open(
+                  `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}`,
+                  "_blank",
+                );
+              }}
+            >
+              Add to Calendar
+            </ArcButton>
+            <button
+              type="button"
+              onClick={() => {
+                bookingStore.reset();
+                navigate({ to: "/home" });
+              }}
+              className="min-h-12 text-sm font-bold text-[#032558]"
+            >
+              Back to Home
+            </button>
+          </div>
         </div>
       </div>
       <BottomNav />

@@ -3,14 +3,11 @@ import {
   Camera,
   ChevronRight,
   UserCog,
-  MapPin,
-  Bell,
   KeyRound,
-  LifeBuoy,
+  CircleHelp,
   FileText,
   Shield,
   LogOut,
-  HeartPulse,
 } from "lucide-react";
 import { AppShell } from "@/components/arc/AppShell";
 import { BottomNav } from "@/components/arc/BottomNav";
@@ -50,11 +47,8 @@ function Profile() {
 
         <div className="cmt-card mt-6">
           <MenuRow to="/profile/edit" icon={UserCog} label="Personal information" />
-          <MenuRow to="/profile/addresses" icon={MapPin} label="Saved addresses" />
-          <MenuRow to="/profile/edit" icon={HeartPulse} label="Insurance & mobility" />
-          <MenuRow to="/profile/notifications" icon={Bell} label="Notification settings" />
           <MenuRow to="/profile/change-password" icon={KeyRound} label="Change password" />
-          <MenuRow to="/support" icon={LifeBuoy} label="Help & support" />
+          <MenuRow to="/profile/help" icon={CircleHelp} label="FAQ" />
           <MenuRow to="/profile/terms" icon={FileText} label="Terms of Service" />
           <MenuRow to="/profile/privacy" icon={Shield} label="Privacy Policy" last />
         </div>

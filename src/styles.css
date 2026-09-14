@@ -162,6 +162,71 @@
   box-shadow: 0 8px 24px rgb(3 37 88 / 6%);
 }
 
+@utility cmt-section {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5c6b7a;
+}
+
+@utility cmt-metal {
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f3f3f3 16%,
+    #d4d4d4 48%,
+    #b8b8b8 74%,
+    #dedede 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 90%),
+    inset 0 -1px 0 rgb(0 0 0 / 8%),
+    0 2px 8px rgb(3 37 88 / 10%);
+}
+
+@utility cmt-metal-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px !important;
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f3f3f3 16%,
+    #d4d4d4 48%,
+    #b8b8b8 74%,
+    #dedede 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 90%),
+    inset 0 -1px 0 rgb(0 0 0 / 8%),
+    0 2px 8px rgb(3 37 88 / 10%);
+  padding: 0.55rem 1.15rem;
+  color: #032558;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@keyframes cmt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility cmt-rise {
+  animation: cmt-rise 320ms ease-out both;
+}
+
 @utility cmt-date-input {
   line-height: 1.2;
 }

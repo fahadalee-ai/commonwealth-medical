@@ -32,7 +32,7 @@ export function ScreenHeader({ title, backTo, right, dark }: ScreenHeaderProps) 
         ) : (
           <div className="w-2" />
         )}
-        <h1 className="truncate text-base font-bold tracking-tight">{title}</h1>
+        <h1 className="truncate text-[17px] font-extrabold tracking-tight">{title}</h1>
       </div>
       <div>{right}</div>
     </div>

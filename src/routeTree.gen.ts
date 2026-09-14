@@ -36,6 +36,8 @@ import { Route as ProfilePrivacyRouteImport } from './routes/profile.privacy'
 import { Route as ProfileTermsRouteImport } from './routes/profile.terms'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
+import { Route as SupportIndexRouteImport } from './routes/support.index'
+import { Route as SupportBookingIdRouteImport } from './routes/support.$bookingId'
 import { Route as WebsiteIndexRouteImport } from './routes/website.index'
 import { Route as WebsiteServicesRouteImport } from './routes/website.services'
 import { Route as AppointmentsIdCancelRouteImport } from './routes/appointments.$id.cancel'
@@ -179,6 +181,16 @@ const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
   path: '/services/$serviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportIndexRoute = SupportIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportBookingIdRoute = SupportBookingIdRouteImport.update({
+  id: '/$bookingId',
+  path: '/$bookingId',
+  getParentRoute: () => SupportRoute,
+} as any)
 const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -217,7 +229,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
-  '/support': typeof SupportRoute
+  '/support': typeof SupportRouteWithChildren
   '/verify': typeof VerifyRoute
   '/website': typeof WebsiteRouteWithChildren
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
@@ -230,11 +242,13 @@ export interface FileRoutesByFullPath {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/support/$bookingId': typeof SupportBookingIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
   '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/support/': typeof SupportIndexRoute
   '/website/': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
   '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
@@ -250,7 +264,6 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
-  '/support': typeof SupportRoute
   '/verify': typeof VerifyRoute
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
   '/commonwealth-medical/$': typeof CommonwealthMedicalSplatRoute
@@ -262,11 +275,13 @@ export interface FileRoutesByTo {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/support/$bookingId': typeof SupportBookingIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments': typeof AppointmentsIndexRoute
   '/commonwealth-medical': typeof CommonwealthMedicalIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/support': typeof SupportIndexRoute
   '/website': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
   '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
@@ -284,7 +299,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
   '/reset-sent': typeof ResetSentRoute
-  '/support': typeof SupportRoute
+  '/support': typeof SupportRouteWithChildren
   '/verify': typeof VerifyRoute
   '/website': typeof WebsiteRouteWithChildren
   '/appointments/$id': typeof AppointmentsIdRouteWithChildren
@@ -297,11 +312,13 @@ export interface FileRoutesById {
   '/profile/privacy': typeof ProfilePrivacyRoute
   '/profile/terms': typeof ProfileTermsRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/support/$bookingId': typeof SupportBookingIdRoute
   '/website/services': typeof WebsiteServicesRoute
   '/appointments/': typeof AppointmentsIndexRoute
   '/commonwealth-medical/': typeof CommonwealthMedicalIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/support/': typeof SupportIndexRoute
   '/website/': typeof WebsiteIndexRoute
   '/appointments/$id/cancel': typeof AppointmentsIdCancelRoute
   '/appointments/$id/receipt': typeof AppointmentsIdReceiptRoute
@@ -333,11 +350,13 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/support/$bookingId'
     | '/website/services'
     | '/appointments/'
     | '/commonwealth-medical/'
     | '/profile/'
     | '/services/'
+    | '/support/'
     | '/website/'
     | '/appointments/$id/cancel'
     | '/appointments/$id/receipt'
@@ -353,7 +372,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/register'
     | '/reset-sent'
-    | '/support'
     | '/verify'
     | '/appointments/$id'
     | '/commonwealth-medical/$'
@@ -365,11 +383,13 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/support/$bookingId'
     | '/website/services'
     | '/appointments'
     | '/commonwealth-medical'
     | '/profile'
     | '/services'
+    | '/support'
     | '/website'
     | '/appointments/$id/cancel'
     | '/appointments/$id/receipt'
@@ -399,11 +419,13 @@ export interface FileRouteTypes {
     | '/profile/privacy'
     | '/profile/terms'
     | '/services/$serviceId'
+    | '/support/$bookingId'
     | '/website/services'
     | '/appointments/'
     | '/commonwealth-medical/'
     | '/profile/'
     | '/services/'
+    | '/support/'
     | '/website/'
     | '/appointments/$id/cancel'
     | '/appointments/$id/receipt'
@@ -421,7 +443,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   RegisterRoute: typeof RegisterRoute
   ResetSentRoute: typeof ResetSentRoute
-  SupportRoute: typeof SupportRoute
+  SupportRoute: typeof SupportRouteWithChildren
   VerifyRoute: typeof VerifyRoute
   WebsiteRoute: typeof WebsiteRouteWithChildren
   AppointmentsIdRoute: typeof AppointmentsIdRouteWithChildren
@@ -629,6 +651,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesServiceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support/': {
+      id: '/support/'
+      path: '/'
+      fullPath: '/support/'
+      preLoaderRoute: typeof SupportIndexRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/$bookingId': {
+      id: '/support/$bookingId'
+      path: '/$bookingId'
+      fullPath: '/support/$bookingId'
+      preLoaderRoute: typeof SupportBookingIdRouteImport
+      parentRoute: typeof SupportRoute
+    }
     '/website/': {
       id: '/website/'
       path: '/'
@@ -680,6 +716,19 @@ const CommonwealthMedicalRouteChildren: CommonwealthMedicalRouteChildren = {
 const CommonwealthMedicalRouteWithChildren =
   CommonwealthMedicalRoute._addFileChildren(CommonwealthMedicalRouteChildren)
 
+interface SupportRouteChildren {
+  SupportBookingIdRoute: typeof SupportBookingIdRoute
+  SupportIndexRoute: typeof SupportIndexRoute
+}
+
+const SupportRouteChildren: SupportRouteChildren = {
+  SupportBookingIdRoute: SupportBookingIdRoute,
+  SupportIndexRoute: SupportIndexRoute,
+}
+
+const SupportRouteWithChildren =
+  SupportRoute._addFileChildren(SupportRouteChildren)
+
 interface WebsiteRouteChildren {
   WebsiteServicesRoute: typeof WebsiteServicesRoute
   WebsiteIndexRoute: typeof WebsiteIndexRoute
@@ -720,7 +769,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   RegisterRoute: RegisterRoute,
   ResetSentRoute: ResetSentRoute,
-  SupportRoute: SupportRoute,
+  SupportRoute: SupportRouteWithChildren,
   VerifyRoute: VerifyRoute,
   WebsiteRoute: WebsiteRouteWithChildren,
   AppointmentsIdRoute: AppointmentsIdRouteWithChildren,

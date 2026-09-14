@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, ChevronLeft } from "lucide-react";
 import { AppShell } from "@/components/arc/AppShell";
-import { ScreenHeader } from "@/components/arc/ScreenHeader";
+import { Logo } from "@/components/arc/Logo";
 import { ArcInput } from "@/components/arc/Input";
 import { ArcButton } from "@/components/arc/Button";
 import { StepIndicator } from "@/components/arc/StepIndicator";
@@ -39,172 +39,203 @@ function Register() {
 
   return (
     <AppShell>
-      <ScreenHeader title="Create Your Account" backTo={step === 1 ? "/login" : undefined} />
-      <div className="px-6 pb-10 pt-2">
-        <p className="text-sm leading-relaxed text-[#5C6B7A]">
-          Set up your profile to start booking rides
-        </p>
-        <StepIndicator total={2} current={step} />
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-[#5C6B7A]">
-          Step {step} of 2
-        </p>
-
-        {step === 1 && (
-          <form
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-              setStep(2);
-            }}
-            className="flex flex-col gap-4"
-          >
-            <div className="grid grid-cols-2 gap-3">
-              <ArcInput
-                label="First Name"
-                placeholder=" "
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <ArcInput label="Last Name" placeholder=" " />
-            </div>
-            <ArcInput label="Date of Birth" type="date" />
-            <ArcInput label="Phone Number" type="tel" placeholder=" " />
-            <ArcInput label="Email Address" type="text" placeholder=" " />
-            <ArcInput label="Home Address" placeholder="Start typing your address" />
-            <ArcButton type="submit" block>
-              Next
-            </ArcButton>
-          </form>
-        )}
-
-        {step === 2 && (
-          <form
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-              markOnboarded();
-              if (firstName) localStorage.setItem("cmt_first_name", firstName);
-              navigate({ to: "/verify" });
-            }}
-            className="flex flex-col gap-4"
-          >
-            <ArcInput label="Password" type="password" placeholder=" " />
-            <ArcInput label="Confirm Password" type="password" placeholder=" " />
-
-            <div className="relative">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#5C6B7A]">
-                Insurance / Program
-              </p>
+      <div className="min-h-dvh bg-[#F5F7FA] pb-10">
+        <div className="cmt-metal h-2 w-full" />
+        <div className="relative overflow-hidden bg-[#032558] px-4 pb-12 pt-3 text-center">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.14),transparent_64%)]" />
+          <div className="relative flex items-center justify-between">
+            {step === 1 ? (
+              <Link
+                to="/login"
+                aria-label="Back"
+                className="flex h-11 w-11 items-center justify-center bg-white/10 text-white"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Link>
+            ) : (
               <button
                 type="button"
-                onClick={() => setProgramOpen((o) => !o)}
-                className="flex h-14 w-full items-center justify-between bg-[#eef1f6] px-4 text-left text-[15px] text-[#032558]"
+                aria-label="Back"
+                onClick={() => setStep(1)}
+                className="flex h-11 w-11 items-center justify-center bg-white/10 text-white"
               >
-                <span>{program}</span>
-                <ChevronDown className={`h-4 w-4 text-[#5C6B7A] ${programOpen ? "rotate-180" : ""}`} />
+                <ChevronLeft className="h-5 w-5" />
               </button>
-              {programOpen && (
-                <ul className="absolute left-0 right-0 z-20 mt-1 border border-[#dce3ec] bg-white shadow-[0_8px_24px_rgba(3,37,88,0.12)]">
-                  {PROGRAMS.map((p) => (
-                    <li key={p}>
+            )}
+            <Logo variant="white" size={132} />
+            <div className="w-11" />
+          </div>
+          <span className="cmt-metal-pill mt-5">Create your account</span>
+          <h1 className="mt-4 text-[24px] font-extrabold tracking-tight text-white">
+            {step === 1 ? "Your profile" : "Coverage details"}
+          </h1>
+          <p className="mt-1 text-sm text-white/72">
+            {step === 1 ? "Set up your profile to start booking rides" : "Add coverage and a password"}
+          </p>
+        </div>
+
+        <div className="relative z-10 -mt-7 px-4">
+          <div className="cmt-card px-2 pb-2 pt-1">
+            <StepIndicator total={2} current={step} labels={["Profile", "Coverage"]} />
+          </div>
+
+          {step === 1 && (
+            <form
+              noValidate
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStep(2);
+              }}
+              className="cmt-card mt-3 flex flex-col gap-4 p-5"
+            >
+              <div className="grid grid-cols-2 gap-3">
+                <ArcInput
+                  label="First Name"
+                  placeholder=" "
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <ArcInput label="Last Name" placeholder=" " />
+              </div>
+              <ArcInput label="Date of Birth" type="date" />
+              <ArcInput label="Phone Number" type="tel" placeholder=" " />
+              <ArcInput label="Email Address" type="text" placeholder=" " />
+              <ArcInput label="Home Address" placeholder="Start typing your address" />
+              <ArcButton type="submit" block>
+                Continue to coverage
+              </ArcButton>
+            </form>
+          )}
+
+          {step === 2 && (
+            <form
+              noValidate
+              onSubmit={(e) => {
+                e.preventDefault();
+                markOnboarded();
+                if (firstName) localStorage.setItem("cmt_first_name", firstName);
+                navigate({ to: "/verify" });
+              }}
+              className="cmt-card mt-3 flex flex-col gap-4 p-5"
+            >
+              <ArcInput label="Password" type="password" placeholder=" " />
+              <ArcInput label="Confirm Password" type="password" placeholder=" " />
+
+              <div className="relative">
+                <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#5C6B7A]">
+                  Insurance / Program
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setProgramOpen((o) => !o)}
+                  className="flex h-14 w-full items-center justify-between bg-[#eef1f6] px-4 text-left text-[15px] text-[#032558]"
+                >
+                  <span>{program}</span>
+                  <ChevronDown className={`h-4 w-4 text-[#5C6B7A] ${programOpen ? "rotate-180" : ""}`} />
+                </button>
+                {programOpen && (
+                  <ul className="absolute left-0 right-0 z-20 mt-1 border border-[#dce3ec] bg-white shadow-[0_8px_24px_rgba(3,37,88,0.12)]">
+                    {PROGRAMS.map((p) => (
+                      <li key={p}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProgram(p);
+                            setProgramOpen(false);
+                          }}
+                          className={`flex min-h-12 w-full items-center px-4 text-left text-sm ${
+                            program === p ? "bg-[#0a6bdb] font-semibold text-white" : "text-[#032558]"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {program === "Transportation Broker (select)" && (
+                <ArcInput label="Broker / Health Plan Name" placeholder=" " />
+              )}
+              <ArcInput label="Member ID / Authorization Number" placeholder="Optional" />
+              <ArcInput label="Emergency Contact Name" placeholder=" " />
+              <ArcInput label="Emergency Contact Phone" type="tel" placeholder=" " />
+
+              <div>
+                <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#5C6B7A]">
+                  Mobility Needs
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {MOBILITY.map((item) => {
+                    const on = mobility.includes(item);
+                    return (
                       <button
+                        key={item}
                         type="button"
-                        onClick={() => {
-                          setProgram(p);
-                          setProgramOpen(false);
-                        }}
-                        className={`flex min-h-12 w-full items-center px-4 text-left text-sm ${
-                          program === p ? "bg-[#0a6bdb] font-semibold text-white" : "text-[#032558]"
+                        onClick={() => toggleMobility(item)}
+                        className={`min-h-11 px-3.5 text-sm font-semibold ${
+                          on ? "bg-[#0a6bdb] text-white" : "bg-[#eef1f6] text-[#032558]"
                         }`}
                       >
-                        {p}
+                        {item}
                       </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {program === "Transportation Broker (select)" && (
-              <ArcInput label="Broker / Health Plan Name" placeholder=" " />
-            )}
-            <ArcInput label="Member ID / Authorization Number" placeholder="Optional" />
-            <ArcInput label="Emergency Contact Name" placeholder=" " />
-            <ArcInput label="Emergency Contact Phone" type="tel" placeholder=" " />
-
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#5C6B7A]">
-                Mobility Needs
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {MOBILITY.map((item) => {
-                  const on = mobility.includes(item);
-                  return (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => toggleMobility(item)}
-                      className={`min-h-11 rounded-full px-3.5 text-sm font-semibold ${
-                        on ? "bg-[#0a6bdb] text-white" : "bg-white text-[#032558] ring-1 ring-[#dce3ec]"
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={() => setAgreed((a) => !a)}
-              className="mt-1 flex items-start gap-3 text-left"
-            >
-              <span
-                className={`mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-md border ${
-                  agreed ? "border-[#0a6bdb] bg-[#0a6bdb]" : "border-[#dce3ec] bg-white"
-                }`}
+              <button
+                type="button"
+                onClick={() => setAgreed((a) => !a)}
+                className="mt-1 flex items-start gap-3 text-left"
               >
-                {agreed && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
-              </span>
-              <span className="text-sm leading-relaxed text-[#5C6B7A]">
-                I agree to the{" "}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLegal("terms");
-                  }}
-                  className="font-semibold text-[#0a6bdb] underline"
+                <span
+                  className={`mt-0.5 flex h-6 w-6 flex-none items-center justify-center border ${
+                    agreed ? "border-[#0a6bdb] bg-[#0a6bdb]" : "border-[#dce3ec] bg-white"
+                  }`}
                 >
-                  Terms of Service
-                </button>{" "}
-                and{" "}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLegal("privacy");
-                  }}
-                  className="font-semibold text-[#0a6bdb] underline"
-                >
-                  Privacy Policy
-                </button>
-              </span>
-            </button>
+                  {agreed && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+                </span>
+                <span className="text-sm leading-relaxed text-[#5C6B7A]">
+                  I agree to the{" "}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLegal("terms");
+                    }}
+                    className="font-semibold text-[#0a6bdb] underline"
+                  >
+                    Terms of Service
+                  </button>{" "}
+                  and{" "}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLegal("privacy");
+                    }}
+                    className="font-semibold text-[#0a6bdb] underline"
+                  >
+                    Privacy Policy
+                  </button>
+                </span>
+              </button>
 
-            <ArcButton type="submit" block>
-              Create Account
-            </ArcButton>
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="min-h-11 text-sm font-semibold text-[#0a6bdb]"
-            >
-              Back to personal information
-            </button>
-          </form>
-        )}
+              <ArcButton type="submit" block>
+                Create Account
+              </ArcButton>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="min-h-11 text-sm font-semibold text-[#0a6bdb]"
+              >
+                Back to personal information
+              </button>
+            </form>
+          )}
+        </div>
 
         <p className="mt-8 text-center text-sm text-[#5C6B7A]">
           Already have an account?{" "}

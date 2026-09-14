@@ -12,74 +12,74 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const navigate = useNavigate();
+
+  const enter = () => {
+    markSignedIn();
+    navigate({ to: "/home" });
+  };
+
   return (
     <AppShell>
       <div className="min-h-dvh bg-[#F5F7FA] pb-10">
-        <div className="rounded-b-[32px] bg-[#032558] px-6 pb-10 pt-12 text-center">
-          <div className="flex justify-center">
-            <Logo variant="white" size={220} />
+        <div className="cmt-metal h-2 w-full" />
+        <div className="relative overflow-hidden bg-[#032558] px-6 pb-14 pt-10 text-center">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.14),transparent_64%)]" />
+          <div className="relative">
+            <div className="flex justify-center">
+              <Logo variant="white" size={196} />
+            </div>
+            <span className="cmt-metal-pill mt-5">Non-emergency medical transportation</span>
+            <h1 className="mt-5 text-[26px] font-extrabold tracking-tight text-white">Welcome back</h1>
+            <p className="mt-1 text-sm leading-relaxed text-white/72">
+              Log in to book and manage your rides
+            </p>
           </div>
-          <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-white">Welcome Back</h1>
-          <p className="mt-1 text-sm leading-relaxed text-white/75">
-            Log in to book and manage your rides
-          </p>
         </div>
 
         <form
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            markSignedIn();
-            navigate({ to: "/home" });
+            enter();
           }}
-          className="mt-6 flex flex-col gap-4 px-6"
+          className="relative z-10 -mt-7 px-4"
         >
-          <ArcInput
-            label="Phone Number or Email"
-            type="text"
-            placeholder=" "
-            prefixIcon={<Mail className="h-4 w-4" />}
-          />
-          <div>
-            <ArcInput label="Password" type="password" placeholder=" " />
-            <div className="mt-2 text-right">
-              <Link to="/forgot-password" className="text-sm font-semibold text-[#0a6bdb]">
-                Forgot Password?
-              </Link>
+          <div className="cmt-card p-5">
+            <div className="flex flex-col gap-4">
+              <ArcInput
+                label="Phone Number or Email"
+                type="text"
+                placeholder=" "
+                prefixIcon={<Mail className="h-4 w-4" />}
+              />
+              <div>
+                <ArcInput label="Password" type="password" placeholder=" " />
+                <div className="mt-2 text-right">
+                  <Link to="/forgot-password" className="text-sm font-semibold text-[#0a6bdb]">
+                    Forgot Password?
+                  </Link>
+                </div>
+              </div>
+              <ArcButton type="submit" block>
+                Log In
+              </ArcButton>
             </div>
           </div>
-          <ArcButton type="submit" block>
-            Log In
-          </ArcButton>
         </form>
 
         <div className="my-6 flex items-center gap-3 px-6">
           <div className="h-px flex-1 bg-[#dce3ec]" />
-          <span className="text-xs text-[#5C6B7A]">or continue with</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#5C6B7A]">
+            or continue with
+          </span>
           <div className="h-px flex-1 bg-[#dce3ec]" />
         </div>
 
-        <div className="flex flex-col gap-3 px-6">
-          <ArcButton
-            variant="secondary"
-            block
-            type="button"
-            onClick={() => {
-              markSignedIn();
-              navigate({ to: "/home" });
-            }}
-          >
+        <div className="flex flex-col gap-3 px-4">
+          <ArcButton variant="secondary" block type="button" onClick={enter}>
             <GoogleIcon /> Continue with Google
           </ArcButton>
-          <ArcButton
-            variant="secondary"
-            block
-            type="button"
-            onClick={() => {
-              markSignedIn();
-              navigate({ to: "/home" });
-            }}
-          >
+          <ArcButton variant="secondary" block type="button" onClick={enter}>
             <AppleIcon /> Continue with Apple
           </ArcButton>
         </div>
@@ -90,7 +90,7 @@ function Login() {
             Sign Up
           </Link>
         </p>
-        <p className="mt-4 text-center text-xs text-[#5C6B7A]">
+        <p className="mt-3 text-center text-xs text-[#5C6B7A]">
           Need help? Call{" "}
           <a href={`tel:${CMT.phoneTel}`} className="font-semibold text-[#0a6bdb]">
             {CMT.phone}
@@ -123,6 +123,7 @@ function GoogleIcon() {
     </svg>
   );
 }
+
 function AppleIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden fill="currentColor">

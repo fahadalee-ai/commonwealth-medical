@@ -30,8 +30,8 @@ export function BottomNav() {
               <li key={String(to)} className="flex items-center justify-center">
                 <Link
                   to={to}
-                  className={`flex min-h-12 min-w-[68px] flex-col items-center justify-center gap-0.5 px-1 text-[10px] font-semibold ${
-                    active ? "bg-[#4da6ff] text-[#032558]" : "bg-transparent text-white"
+                  className={`flex min-h-12 min-w-[68px] flex-col items-center justify-center gap-0.5 px-1 text-[10px] font-semibold transition-colors ${
+                    active ? "bg-[#4da6ff] text-[#032558]" : "bg-transparent text-white/88"
                   }`}
                 >
                   <Icon
